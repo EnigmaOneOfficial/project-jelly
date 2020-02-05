@@ -1,0 +1,23 @@
+{
+  "name": "project-jelly",
+  "version": "1.0.0",
+  "description": "Project Jelly is a passion project developed by Damon \"Enigma\" Gillombardo.",
+  "main": "core.js",
+  "scripts": {
+    "test": "node core.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EnigmaOneOfficial/project-jelly.git"
+  },
+  "author": "Damon Gillombardo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/EnigmaOneOfficial/project-jelly/issues"
+  },
+  "homepage": "https://github.com/EnigmaOneOfficial/project-jelly#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "mongodb": "^3.5.2"
+  }
+}
