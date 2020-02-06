@@ -18,7 +18,6 @@
   "homepage": "https://github.com/EnigmaOneOfficial/project-jelly#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
-    "mongodb": "^3.5.2",
-    "promise": "^8.0.3"
+    "mongodb": "^3.5.2"
   }
 }
