@@ -1,3 +1,3 @@
-module.exports = async (client) => {
+module.exports = async (core) => {
     console.log('Client is online and ready for use')
 }

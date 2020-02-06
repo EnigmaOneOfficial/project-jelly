@@ -1,3 +1,9 @@
 module.exports = async (client, message) => {
-    console.log(message.content)
+    if (!message.author.bot) {
+        
+        if (message.channel.type == 'text') {
+            console.log(message.content)
+        }
+
+    }
 }

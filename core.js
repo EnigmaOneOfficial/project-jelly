@@ -16,14 +16,17 @@ const init = async () => {
         events = events.filter(event => !event.search(/\w+(?=.js)/))
         var events_cache = events.slice()
 
-        for(var cursor = 0; cursor < events.length; cursor++) {
+        for (var cursor = 0; cursor < events.length; cursor++) {
             events_cache[cursor] = events_cache[cursor].split('.')[0]
             events[cursor] = require('./events/' + events[cursor])
-
-            client.on(events_cache[cursor], events[cursor].bind(null, {client: client}))
         }
 
-        switch(events.length) {
+        var cursor = 0; client.events = events
+        events.forEach(event => {
+            client.on(events_cache[cursor], event.bind(null, client)); cursor++;
+        })
+
+        switch (events.length) {
             case 1:
                 console.log('Loaded [1] event\n', events_cache, '\n')
                 break;
