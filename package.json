@@ -4,7 +4,7 @@
   "description": "Project Jelly is a passion project developed by Damon \"Enigma\" Gillombardo.",
   "main": "core.js",
   "scripts": {
-    "start": "node core.js"
+    "start": "node --no-warnings core.js"
   },
   "repository": {
     "type": "git",
