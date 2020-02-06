@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 const client = new discord.Client()
-const mongo = require('mongodb')
-const mongoClient = new mongo.MongoClient('mongodb://localhost:27017/', {useUnifiedTopology: true, retryWrites: true})
+
+const sql = new require('pg').Pool()
 
 const { readdir } = require('fs').promises
 const { promisify } = require('util')
@@ -9,8 +9,7 @@ const { promisify } = require('util')
 const config = require('./config.json')
 
 const init = async () => {
-    var database = mongoClient.db('discord')
-    var collections = promisify(database.collections)('users')
+    await sql.connect()
     console.log('Initializing client... \n')
     var events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
     
