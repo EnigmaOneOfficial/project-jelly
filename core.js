@@ -7,7 +7,7 @@ const { promisify } = require('util')
 const config = require('./config.json')
 
 const init = async () => {
-    await sql.connect()
+
     console.log('Initializing client... \n')
     var events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
     
