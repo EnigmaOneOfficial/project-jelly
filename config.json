@@ -1,3 +1,4 @@
 {
-    "bot_token": "Njc0ODU1NTEyNTI5MDQzNDc4.XjuqYQ.L9lY-O11ulbSmdE8rJrUlom5rdk"
+    "bot_token": "Njc0ODU1NTEyNTI5MDQzNDc4.XjuqYQ.L9lY-O11ulbSmdE8rJrUlom5rdk",
+    "mongo_token": "mongodb+srv://admin:lO33rBdDe6nkeBnU@discord-nfpiq.mongodb.net/test?retryWrites=true&w=majority"
 }
