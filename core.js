@@ -2,7 +2,6 @@ const discord = require('discord.js')
 const client = new discord.Client()
 
 const { readdir } = require('fs').promises
-const { promisify } = require('util')
 
 const config = require('./config.json')
 
