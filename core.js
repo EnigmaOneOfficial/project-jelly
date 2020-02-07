@@ -1,8 +1,6 @@
 const discord = require('discord.js')
 const client = new discord.Client()
 
-const sql = new require('pg').Pool()
-
 const { readdir } = require('fs').promises
 const { promisify } = require('util')
 
