@@ -3,11 +3,11 @@ module.exports = {
         name: 'ping',
         description: 'Test command to ping back',
         aliases: [],
-
+        availability: ['text'],
+        auth_level: 0,
+        permitted: []
     },
-    exec: async (client, message) => {
-        let t = Date.now()
-        await client.sleep(5000)
-        message.channel.send(`Waited ${Date.now() - t}`)
+    exec: async (client, message, other) => {
+        message.channel.send(`\`\`returned: ${other.current_time - message.createdTimestamp} ms\`\``)
     }
 }
