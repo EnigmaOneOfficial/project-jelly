@@ -10,13 +10,15 @@ module.exports = async (client, message) => {
                     level: 1,
                     class: 'none',
                     silver: 100,
-                    gold: 1,
+                    gold: 0,
                     inventory: {
 
                     },
                     equipped: {
 
-                    }
+                    },
+
+
                     stats: {
 
                     }
@@ -38,7 +40,7 @@ module.exports = async (client, message) => {
             returnOriginal: false
         })
         user = user.value
-
+        console.log('love u bb')
         if (user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < 3000)) {
             return;
         }
