@@ -1,6 +1,9 @@
-module.exports = async (client, message) => {
+module.exports = {
+  config: {
+    name: 'message'
+  },
+  exec: async (client, message) => {
     if (!message.author.bot) {
-
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
             $setOnInsert: {
                 discord_id: message.author.id,
@@ -40,7 +43,7 @@ module.exports = async (client, message) => {
             returnOriginal: false
         })
         user = user.value
-        console.log('love u bb')
+
         if (user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < 3000)) {
             return;
         }
@@ -52,9 +55,9 @@ module.exports = async (client, message) => {
             const args = request.split(' ')
             const command = args.shift()
 
-            const index = client.commands.real.findIndex(command_module => command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase()))
+            const index = client.commands.findIndex(command_module => command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase()))
             if (index != -1) {
-                const command_module = client.commands.real[index]
+                const command_module = client.commands[index]
                 const config = command_module.config
                 if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
                     if (config.availability.includes(message.channel.type)) {
@@ -94,4 +97,5 @@ module.exports = async (client, message) => {
         }
 
     }
+  }
 }

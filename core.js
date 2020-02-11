@@ -5,62 +5,65 @@ const config = require('./config.json')
 
 const globals = require('./globals.js')
 
-const { readdir } = require('fs').promises
+const { promisify } = require('util')
+const readdir = promisify(require('fs').readdir)
 globals.readdir = readdir
 
 const init = async () => {
 
     console.log('Initializing client... ')
-    var events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
-    
-    if (events && events.length > 0) {
+    client.events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
 
-        events = events.filter(event => !event.search(/\w+(?=.js)/))
+    if (client.events && client.events.length > 0) {
+
+        client.events = client.events.filter(event => !event.search(/\w+(?=.js)/))
         let events_cache = []
 
-        events.forEach(function(event, index) {
+        client.events.forEach(function(event, index) {
             events_cache.push(event.split('.')[0])
             this[index] = require(`./events/${event}`)
-        }, events)
+        }, client.events)
 
-        switch (events.length) {
+        switch (client.events.length) {
             case 1:
                 console.log('Loaded [1] event\n', events_cache)
                 break;
             default:
-                console.log(`Loaded [${events.length}] events\n`, events_cache)
+                console.log(`Loaded [${client.events.length}] events\n`, events_cache)
                 break;
         }
 
-        var commands = await readdir('./commands/').catch(_ => console.log('Could not find directory'))
+        client.commands = await readdir('./commands/').catch(_ => console.log('Could not find directory'))
 
-        if (commands && commands.length > 0) {
+        if (client.commands && client.commands.length > 0) {
 
-            commands = commands.filter(command => !command.search(/\w+(?=.js)/))
+            client.commands = client.commands.filter(command => !command.search(/\w+(?=.js)/))
             let commands_cache = []
 
-            commands.forEach(function(command, index) {
+            client.commands.forEach(function(command, index) {
                 commands_cache.push(command.split('.')[0])
                 this[index] = require(`./commands/${command}`)
-            }, commands)
+            }, client.commands)
 
-            switch (commands.length) {
+            switch (client.commands.length) {
                 case 1:
                     console.log('Loaded [1] command\n', commands_cache)
                     break;
                 default:
-                    console.log(`Loaded [${events.length}] commands\n`, commands_cache)
+                    console.log(`Loaded [${client.commands.length}] commands\n`, commands_cache)
                     break;
             }
+
             const mongo = await new require('mongodb').MongoClient
-            const connection = await mongo.connect(require('./config').mongo_token, {useNewUrlParser: true})
+            const connection = await mongo.connect(config.mongo_token, {useNewUrlParser: true})
             const database = connection.db('discord')
 
             database.users = database.collection('users'); database.guilds = database.collection('guilds'); client.database = database;
-            client.events = {real: events, cached: events_cache}; client.commands = {real: commands, cached: commands_cache}; client.globals = globals;
-            events.forEach(function(event, index) {
-                client.on(events_cache[index], event.bind(null, client))
-            }, events)
+            client.globals = globals;
+
+            client.events.forEach(function(event, index) {
+                client.on(events_cache[index], (...args) => { args.unshift(client); client.events[index].exec.apply(null, args) })
+            }, client.events)
 
             client.login(config.bot_token)
         }
