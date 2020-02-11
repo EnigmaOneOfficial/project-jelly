@@ -9,7 +9,7 @@ module.exports = {
     },
     exec: async (client, message, other) => {
         let command_index = client.commands.findIndex(command => (command.config.name == other.args[0] || command.config.aliases.includes(other.args[0])))
-        let events_index = client.events.findIndex(event => (event.config.name == other.args[0]))
+        let events_index = client.events.findIndex(event => (event.config.name == other.args[0] || event.config.aliases.includes(other.args[0])))
 
         if (command_index != -1) {
           let command_name = client.commands[command_index].config.name
