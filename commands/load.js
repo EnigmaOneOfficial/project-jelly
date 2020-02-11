@@ -15,12 +15,12 @@ module.exports = {
           let command_name = client.commands[command_index].config.name
           delete require.cache[require.resolve(`../commands/${command_name}.js`)]
           client.commands[command_index] = require(`../commands/${command_name}.js`)
-          console.log(`Reloading command file [ ${command_name} ]`)
+          message.channel.send(`Reloading command file \`\`${command_name}\`\``)
         } else if (events_index != -1) {
           let event_name = client.events[events_index].config.name
           delete require.cache[require.resolve(`../events/${event_name}.js`)]
           client.events[events_index] = require(`../events/${event_name}.js`)
-          console.log(`Reloading event file [ ${event_name} ]`)
+          message.channel.send(`Reloading event file \`\`${event_name}\`\``)
         } else {
           let commands = await client.globals.readdir('./commands/')
           let events = await client.globals.readdir('./events/')
@@ -28,13 +28,13 @@ module.exports = {
           if (commands.includes(other.args[0] + '.js')) {
             let name = other.args[0]
             client.commands.push(require(`../commands/${name}.js`))
-            console.log(`Loading command file [ ${name} ]`)
+            message.channel.send(`Loading command file \`\`${name}\`\``)
           } else if (events.includes(other.args[0] + '.js')) {
             let name = other.args[0]
             client.events.push(require(`../events/${name}.js`))
-            console.log(`Loading event file [ ${name} ]`)
+            message.channel.send(`Loading event file \`\`${name}\`\``)
           } else {
-            console.log('Failed to locate file')
+            message.channel.send(`Failed to locate file \`\`${other.args[0]}\`\``)
           }
         }
 
