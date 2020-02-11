@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
                     level: 1,
                     class: 'none',
                     silver: 100,
-                    gold: 0,
+                    gold: 1,
                     inventory: {
 
                     },
@@ -18,7 +18,7 @@ module.exports = async (client, message) => {
 
                     }
                     stats: {
-                      
+
                     }
                 }
             },
