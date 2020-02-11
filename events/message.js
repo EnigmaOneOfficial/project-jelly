@@ -1,6 +1,7 @@
 module.exports = {
   config: {
-    name: 'message'
+    name: 'message',
+    aliases: ['msg']
   },
   exec: async (client, message) => {
     if (!message.author.bot) {
