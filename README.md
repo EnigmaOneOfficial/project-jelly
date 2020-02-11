@@ -2,7 +2,7 @@
 Project Jelly is a passion project developed by Damon "Enigma" Gillombardo.
 
 ## Features
-* Aync integration
+* Full async
 * Multiple commands per message
 * Command yielding
 * Loading/reloading of files

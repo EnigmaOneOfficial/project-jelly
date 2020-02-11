@@ -77,7 +77,6 @@ module.exports = {
                 returnOriginal: false
             })
             guild = guild.value
-            console.log(guild)
 
         } else if (message.channel.type == 'dm') {
 
