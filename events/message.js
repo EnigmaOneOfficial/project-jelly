@@ -67,8 +67,8 @@ module.exports = {
             }
         })
 
-        if (commands.length > 5) {
-            commands.slice(4)
+        if (commands.length > client.globals.MAX_COMMAND_PARSE) {
+            commands.slice(client.globals.MAX_COMMAND_PARSE - 1)
         }
 
         const current_time = Date.now()
@@ -80,7 +80,10 @@ module.exports = {
         if (message.channel.type == 'text') {
             let guild = await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
                 $setOnInsert: {
-                    guild_id: message.guild.id
+                    guild_id: message.guild.id,
+                    settings: {
+
+                    }
                 },
                 $inc: {
                     total_message_count: 1
@@ -91,6 +94,7 @@ module.exports = {
                 returnOriginal: false
             })
             guild = guild.value
+            console.log(guild)
 
         } else if (message.channel.type == 'dm') {
 

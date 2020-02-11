@@ -3,7 +3,7 @@ module.exports = {
         name: 'ping',
         description: 'Test command to ping back',
         aliases: [],
-        availability: ['text'],
+        availability: ['text', 'dm'],
         auth_level: 0,
         permitted: []
     },

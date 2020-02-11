@@ -8,6 +8,6 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, other) => {
-
+      
     }
 }

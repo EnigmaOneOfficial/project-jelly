@@ -1,8 +1,8 @@
 module.exports = {
     config: {
-        name: 'reload',
-        description: 'Reloads a file into cache',
-        aliases: ['re'],
+        name: 'load',
+        description: 'Loads or reloads a file into cache',
+        aliases: ['reload'],
         availability: ['text', 'dm'],
         auth_level: 9,
         permitted: []
