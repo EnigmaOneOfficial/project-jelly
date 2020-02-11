@@ -8,21 +8,17 @@ module.exports = async (client, message) => {
                 prefix: '.',
                 player: {
                     level: 1,
-                    current_exp: 0,
-                    max_exp: 10,
-                    attack: 1,
-                    strength: 1,
-                    defense: 1,
-                    health: 10,
-                    agility: 1,
                     class: 'none',
                     silver: 100,
                     gold: 0,
                     inventory: {
-                        
+
                     },
                     equipped: {
 
+                    }
+                    stats: {
+                      
                     }
                 }
             },
@@ -49,11 +45,11 @@ module.exports = async (client, message) => {
 
         const command_parse = message.cleanContent.split(user.prefix)
         let commands = []
-        
+
         command_parse.forEach(request => {
             const args = request.split(' ')
             const command = args.shift()
-            
+
             const index = client.commands.real.findIndex(command_module => command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase()))
             if (index != -1) {
                 const command_module = client.commands.real[index]
@@ -92,7 +88,7 @@ module.exports = async (client, message) => {
             guild = guild.value
 
         } else if (message.channel.type == 'dm') {
-            
+
         }
 
     }
