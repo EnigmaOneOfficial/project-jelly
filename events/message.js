@@ -8,24 +8,7 @@ module.exports = {
             $setOnInsert: {
                 discord_id: message.author.id,
                 auth_level: 0,
-                prefix: '.',
-                player: {
-                    level: 1,
-                    class: 'none',
-                    silver: 100,
-                    gold: 0,
-                    inventory: {
-
-                    },
-                    equipped: {
-
-                    },
-
-
-                    stats: {
-
-                    }
-                }
+                prefix: '.'
             },
             $inc: {
                 total_message_count: 1
