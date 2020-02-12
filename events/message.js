@@ -4,6 +4,7 @@ module.exports = {
     aliases: ['msg']
   },
   exec: async (client, message) => {
+    let message_read = Date.now()
     if (!message.author.bot) {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
             $setOnInsert: {
@@ -35,6 +36,7 @@ module.exports = {
         let command_parse = message.content.split(user.prefix)
         command_parse = command_parse.filter(command => command != '')
         let commands = []
+        let query = []
 
         command_parse.forEach((request, index) => {
             const args = request.split(' ')
@@ -47,12 +49,13 @@ module.exports = {
                 if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
                     if (config.availability.includes(message.channel.type)) {
                         commands.push({
-                            exec: command_module.exec,
+                            self: command_module,
                             args: args.filter(arg => arg != ''),
                             called_with: command.trimRight(),
                             query_index: index,
-                            query_total: command_parse.length
+                            message_read: message_read
                           })
+                          query.push(config.name)
                     }
                 }
             }
@@ -64,8 +67,8 @@ module.exports = {
 
         const original_time = Date.now()
         for (let index = 0; index < commands.length; index++) {
-            commands[index].called_at = Date.now(); commands[index].original_time = original_time
-            await commands[index].exec(client, message, commands[index])
+            commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
+            await commands[index].self.exec(client, message, commands[index])
             await client.globals.sleep(client.globals.SLEEP_BETWEEN_COMMAND)
         }
 
