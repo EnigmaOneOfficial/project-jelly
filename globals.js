@@ -1,5 +1,6 @@
 module.exports = {
-    sleep: require('util').promisify(setTimeout),
-    SLEEP_BETWEEN_COMMAND: 1000,
+    util: require('util'),
+    fs: require('fs'),
+    SLEEP_BETWEEN_COMMAND: 0,
     MAX_COMMAND_PARSE: 10
 }

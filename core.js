@@ -5,11 +5,12 @@ const config = require('./config.json')
 
 const globals = require('./globals.js')
 
-const { promisify } = require('util')
-const readdir = promisify(require('fs').readdir)
-globals.readdir = readdir
+globals.promisify = globals.util.promisify
+globals.readdir = globals.promisify(globals.fs.readdir)
+globals.sleep = globals.promisify(setTimeout)
 
 const init = async () => {
+  let readdir = globals.readdir
 
     console.log('Initializing client... ')
     client.events = await readdir('./events/').catch(_ => console.log('Could not find directory'))

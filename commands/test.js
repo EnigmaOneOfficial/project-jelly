@@ -7,7 +7,7 @@ module.exports = {
         auth_level: 9,
         permitted: []
     },
-    exec: async (client, message, other) => {
-      
+    exec: async (client, message, command) => {
+
     }
 }

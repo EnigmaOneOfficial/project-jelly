@@ -7,7 +7,7 @@ module.exports = {
         auth_level: 0,
         permitted: []
     },
-    exec: async (client, message, other) => {
+    exec: async (client, message, info) => {
       message.channel.send('https://github.com/EnigmaOneOfficial/project-jelly')
     }
 }

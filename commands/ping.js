@@ -7,7 +7,10 @@ module.exports = {
         auth_level: 0,
         permitted: []
     },
-    exec: async (client, message, other) => {
-        message.channel.send(`\`\`returned: ${other.current_time - message.createdTimestamp} ms\`\``)
+    exec: async (client, message, command) => {
+        let now = Date.now()
+        await client.globals.sleep(client.globals.SLEEP_BETWEEN_COMMAND)
+        let after = Date.now()
+        message.channel.send(`\`\`returned: ${(after - now) + (command.called_at - message.createdTimestamp)} ms\`\`\n\`\`after: ${client.globals.SLEEP_BETWEEN_COMMAND} ms delay\`\``)
     }
 }

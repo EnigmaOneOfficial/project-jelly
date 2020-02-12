@@ -16,7 +16,7 @@ module.exports = {
             },
             $push: {
                 stored_messages: {
-                    $each: [{message_id: message.id, original_content: message.cleanContent, created: message.createdTimestamp}],
+                    $each: [{message_id: message.id, original_content: message.content, created: message.createdTimestamp}],
                     $slice: 10,
                     $position: 0
                 }
@@ -32,32 +32,40 @@ module.exports = {
             return;
         }
 
-        const command_parse = message.cleanContent.split(user.prefix)
+        let command_parse = message.content.split(user.prefix)
+        command_parse = command_parse.filter(command => command != '')
         let commands = []
 
-        command_parse.forEach(request => {
+        command_parse.forEach((request, index) => {
             const args = request.split(' ')
             const command = args.shift()
 
-            const index = client.commands.findIndex(command_module => command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase()))
-            if (index != -1) {
-                const command_module = client.commands[index]
+            const command_index = client.commands.findIndex(command_module => command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase()))
+            if (command_index != -1) {
+                const command_module = client.commands[command_index]
                 const config = command_module.config
                 if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
                     if (config.availability.includes(message.channel.type)) {
-                        commands.push({exec: command_module.exec, args: args, called_with: request})
+                        commands.push({
+                            exec: command_module.exec,
+                            args: args.filter(arg => arg != ''),
+                            called_with: command.trimRight(),
+                            query_index: index,
+                            query_total: command_parse.length
+                          })
                     }
                 }
             }
-        })
+          }, command_parse)
 
         if (commands.length > client.globals.MAX_COMMAND_PARSE) {
             commands.slice(client.globals.MAX_COMMAND_PARSE - 1)
         }
 
-        const current_time = Date.now()
-        for (command of commands) {
-            await command.exec(client, message, {args: command.args, called_with: command.called_with, current_time: current_time})
+        const original_time = Date.now()
+        for (let index = 0; index < commands.length; index++) {
+            commands[index].called_at = Date.now(); commands[index].original_time = original_time
+            await commands[index].exec(client, message, commands[index])
             await client.globals.sleep(client.globals.SLEEP_BETWEEN_COMMAND)
         }
 
