@@ -7,6 +7,7 @@ const globals = require('./globals.js')
 
 globals.promisify = globals.util.promisify
 globals.readdir = globals.promisify(globals.fs.readdir)
+globals.writeFile = globals.promisify(globals.fs.writeFile)
 globals.sleep = globals.promisify(setTimeout)
 
 const init = async () => {

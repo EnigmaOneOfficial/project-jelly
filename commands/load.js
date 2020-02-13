@@ -12,7 +12,7 @@ module.exports = {
         let events_index = client.events.findIndex(event_cache => (event_cache.config.name == command.args[0] || event_cache.config.aliases.includes(command.args[0])))
 
         const git = client.globals.git
-        const fs = client.globals.fs
+        const writeFile = client.globals.writeFile
         const curl = client.globals.curl
 
         if (command_index != -1) {
@@ -27,12 +27,13 @@ module.exports = {
           })
           if (download && download.data)  {
 
-            curl.request({url: download.data.download_url}, (err, content) => {
-              fs.writeFile(`./commands/${command_name}.js`, content)
+          curl.request({url: download.data.download_url}, async (err, content) => {
+              if (err) return
+              await writeFile(`./commands/${command_name}.js`, content).then(_ => {
+                client.commands[command_index] = require(`../commands/${command_name}.js`)
+                message.channel.send(`Reloaded command file \`\`${command_name}\`\``)
+              })
             })
-
-            client.commands[command_index] = require(`../commands/${command_name}.js`)
-            message.channel.send(`Reloaded command file \`\`${command_name}\`\``)
 
           } else {
 
@@ -70,6 +71,7 @@ module.exports = {
             client.globals = require('../globals.js')
             client.globals.promisify = client.globals.util.promisify
             client.globals.readdir = client.globals.promisify(client.globals.fs.readdir)
+            client.globals.writeFile = client.globals.promisify(client.globals.fs.writeFile)
             client.globals.sleep = client.globals.promisify(setTimeout)
             client.globals.git = new client.globals.octokit({
               auth: config.git_token,
