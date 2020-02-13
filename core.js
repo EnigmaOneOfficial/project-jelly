@@ -10,7 +10,13 @@ globals.readdir = globals.promisify(globals.fs.readdir)
 globals.sleep = globals.promisify(setTimeout)
 
 const init = async () => {
-  let readdir = globals.readdir
+    const readdir = globals.readdir
+    const fetch = globals.fetch
+
+    const api = await fetch('https://api.github.com/repos/EnigmaOneOfficial/project-jelly')
+    const result = await api.json()
+    console.log(result)
+
 
     console.log('Initializing client... ')
     client.events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
