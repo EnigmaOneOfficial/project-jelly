@@ -11,6 +11,6 @@ module.exports = {
         let now = Date.now()
         await client.globals.sleep(client.globals.internal.ping_timeout)
         let after = Date.now()
-        message.channel.send(`\`\`returned\`\` \`\`${(after - now) + (command.called_at - command.message_read)} ms\`\`\n\`\`after\`\` \`\`${client.globals.internal.ping_timeout} ms delays\`\``)
+        message.channel.send(`\`\`returned\`\` \`\`${(after - now) + (command.called_at - command.message_read)} ms\`\`\n\`\`after\`\` \`\`${client.globals.internal.ping_timeout} ms delayssss\`\``)
     }
 }
