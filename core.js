@@ -11,11 +11,13 @@ globals.sleep = globals.promisify(setTimeout)
 
 const init = async () => {
     const readdir = globals.readdir
-    const fetch = globals.fetch
 
-    const api = await fetch('https://api.github.com/repos/EnigmaOneOfficial/project-jelly')
-    const result = await api.json()
-    console.log(result)
+    globals.git = new globals.octokit({
+      auth: config.git_token,
+      userAgent: 'project-jelly'
+    })
+
+
 
 
     console.log('Initializing client... ')
