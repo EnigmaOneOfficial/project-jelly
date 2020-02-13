@@ -13,6 +13,7 @@ module.exports = {
 
         const git = client.globals.git
         const writeFile = client.globals.writeFile
+        const readdir = client.globals.readdir
         const curl = client.globals.curl
 
         if (command_index != -1) {
@@ -24,10 +25,10 @@ module.exports = {
             owner: 'EnigmaOneOfficial',
             repo: 'project-jelly',
             path: `commands/${command_name}.js`
-          })
+          }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
           if (download && download.data)  {
 
-          curl.request({url: download.data.download_url}, async (err, content) => {
+            curl.request({url: download.data.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./commands/${command_name}.js`, content).then(_ => {
                 client.commands[command_index] = require(`../commands/${command_name}.js`)
@@ -35,23 +36,54 @@ module.exports = {
               })
             })
 
-          } else {
-
-            message.channel.send('Could not find file on Github, make sure to push commits')
-
           }
 
         } else if (events_index != -1) {
 
           let event_name = client.events[events_index].config.name
           delete require.cache[require.resolve(`../events/${event_name}.js`)]
-          client.events[events_index] = require(`../events/${event_name}.js`)
-          message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
+          let download = await git.repos.getContents({
+            owner: 'EnigmaOneOfficial',
+            repo: 'project-jelly',
+            path: `events/${event_name}.js`
+          }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+          if (download && download.data)  {
+
+            curl.request({url: download.data.download_url}, async (err, content) => {
+              if (err) return
+              await writeFile(`./events/${event_name}.js`, content).then(_ => {
+                client.commands[command_index] = require(`../event/${event_name}.js`)
+                message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
+              })
+            })
+
+          }
+
+        } else if (command.args[0] == 'globals') {
+
+          delete require.cache[require.resolve('../globals.js')]
+          let download = await git.repos.getContents({
+            owner: 'EnigmaOneOfficial',
+            repo: 'project-jelly',
+            path: `globals.js`
+          }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+
+          if (download && download.data)  {
+
+            curl.request({url: download.data.download_url}, async (err, content) => {
+              if (err) return
+              await writeFile(`./globals.js`, content).then(async (_) => {
+                client.globals = require('../globals.js')
+                await client.globals.load()
+                message.channel.send('Reloaded \`\`globals\`\`')
+              })
+            })
+          }
 
         } else {
 
-          let commands = await client.globals.readdir('./commands/')
-          let events = await client.globals.readdir('./events/')
+          let commands = await readdir('./commands/')
+          let events = await readdir('./events/')
 
           if (commands.includes(command.args[0] + '.js')) {
 
@@ -64,20 +96,6 @@ module.exports = {
             let name = command.args[0]
             client.events.push(require(`../events/${name}.js`))
             message.channel.send(`Loaded event file \`\`${name}\`\``)
-
-          } else if (command.args[0] == 'globals') {
-
-            delete require.cache[require.resolve('../globals.js')]
-            client.globals = require('../globals.js')
-            client.globals.promisify = client.globals.util.promisify
-            client.globals.readdir = client.globals.promisify(client.globals.fs.readdir)
-            client.globals.writeFile = client.globals.promisify(client.globals.fs.writeFile)
-            client.globals.sleep = client.globals.promisify(setTimeout)
-            client.globals.git = new client.globals.octokit({
-              auth: config.git_token,
-              userAgent: 'project-jelly'
-            })
-            message.channel.send('Reloaded \`\`globals\`\`')
 
           } else {
 

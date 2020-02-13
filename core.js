@@ -5,21 +5,9 @@ const config = require('./config.json')
 
 const globals = require('./globals.js')
 
-globals.promisify = globals.util.promisify
-globals.readdir = globals.promisify(globals.fs.readdir)
-globals.writeFile = globals.promisify(globals.fs.writeFile)
-globals.sleep = globals.promisify(setTimeout)
-
 const init = async () => {
+    await globals.load()
     const readdir = globals.readdir
-
-    globals.git = new globals.octokit({
-      auth: config.git_token,
-      userAgent: 'project-jelly'
-    })
-
-
-
 
     console.log('Initializing client... ')
     client.events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
