@@ -21,7 +21,7 @@ module.exports = {
           path: `commands/`
         })
         let commands_index = commands.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
-        let commnd_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
+        let command_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
         let events = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
