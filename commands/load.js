@@ -70,8 +70,8 @@ module.exports = {
 
           await load_file(`events/${target}.js`, async () => {
             if (event_found != -1) {
-              delete require.cache[require.resolve(`./${target}.js`)]
-              client.commands.splice(event_found, 1, require(`./${target}.js`))
+              delete require.cache[require.resolve(`../events/${target}.js`)]
+              client.events.splice(event_found, 1, require(`./${target}.js`))
             } else {
               client.commands.push(require(`./${target}`))
             }
