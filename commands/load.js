@@ -56,7 +56,7 @@ module.exports = {
           })
 
         } else if (command_index != -1) {
-          let path = commands.data[command_index].name + '.js'
+          let path = commands.data[command_index].name
           console.log(path)
           await load_file(`commands/${path}`, async () => {
             if (command_found != -1) {
@@ -69,7 +69,7 @@ module.exports = {
           })
 
         } else if (event_index != -1) {
-          let path = events.data[event_index].name + '.js'
+          let path = events.data[event_index].name
           console.log(path)
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
