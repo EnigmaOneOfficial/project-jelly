@@ -93,8 +93,6 @@ module.exports = {
           }
 
         } else if (commands_search && commands_search.data && commands_search.data.findIndex(git_command => git_command.name == command.args[0]) != -1) {
-              commands_search = commands_search.data
-
               let download = await git.repos.getContents({
                 owner: 'EnigmaOneOfficial',
                 repo: 'project-jelly',
@@ -109,8 +107,6 @@ module.exports = {
                 })
               })
         } else if (events_search && events_search.data && events_search.data.findIndex(git_event => git_event.name == command.args[0]) != -1) {
-            events_search = events_search.data
-
             let download = await git.repos.getContents({
               owner: 'EnigmaOneOfficial',
               repo: 'project-jelly',
@@ -121,10 +117,11 @@ module.exports = {
               if (err) return
               await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
                 client.commands.push(require(`../event/${command.args[0]}.js`))
-                message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
+                message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
               })
             })
         } else {
+          console.log(commands_search.data)
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
         }
     }
