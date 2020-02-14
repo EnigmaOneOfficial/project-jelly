@@ -1,6 +1,6 @@
 module.exports = {
     config: {
-        name: 'test',
+        name: 'joe',
         description: 'internal testing command',
         aliases: [],
         availability: ['text', 'dm'],
@@ -8,6 +8,6 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-
+      message.channel.send('mama')
     }
 }
