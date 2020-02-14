@@ -37,7 +37,7 @@ module.exports = {
             owner: 'EnigmaOneOfficial',
             repo: 'project-jelly',
             path: `commands/${command_name}.js`
-          }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+          })
           if (download && download.data)  {
 
             curl.request({url: download.data.download_url}, async (err, content) => {
@@ -58,7 +58,7 @@ module.exports = {
             owner: 'EnigmaOneOfficial',
             repo: 'project-jelly',
             path: `events/${event_name}.js`
-          }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+          })
           if (download && download.data)  {
 
             curl.request({url: download.data.download_url}, async (err, content) => {
@@ -78,7 +78,7 @@ module.exports = {
             owner: 'EnigmaOneOfficial',
             repo: 'project-jelly',
             path: `globals.js`
-          }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+          })
 
           if (download && download.data)  {
 
