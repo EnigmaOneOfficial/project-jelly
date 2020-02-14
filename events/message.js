@@ -61,7 +61,7 @@ module.exports = {
           }, command_parse)
 
         if (commands.length > client.globals.MAX_COMMAND_PARSE) {
-            commands = commands.slice(client.globals.MAX_COMMAND_PARSE)
+            commands = commands.slice(0, client.globals.MAX_COMMAND_PARSE)
         }
 
         const original_time = Date.now()
