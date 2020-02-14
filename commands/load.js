@@ -36,7 +36,7 @@ module.exports = {
             repo: 'project-jelly',
             path: path
           })
-
+          console.log(path)
           curl.request({url: download.data.download_url}, async (err, content) => {
             if (err) return
             await writeFile(`./${path}`, content).then(async () => {
@@ -71,7 +71,7 @@ module.exports = {
           await load_file(`events/${target}.js`, async () => {
             if (event_found != -1) {
               delete require.cache[require.resolve(`../events/${target}.js`)]
-              client.events.splice(event_found, 1, require(`./${target}.js`))
+              client.events.splice(event_found, 1, require(`../events/${target}.js`))
             } else {
               client.commands.push(require(`../events/${target}`))
             }
