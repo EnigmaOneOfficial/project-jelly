@@ -20,12 +20,12 @@ module.exports = {
         let commands_search = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
-          path: `commands/${command.args[0]}.js`
+          path: `commands/`
         })
         let events_search = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
-          path: `events/${command.args[0]}.js`
+          path: `events/`
         })
 
         if (command_index != -1) {
@@ -63,7 +63,7 @@ module.exports = {
           curl.request({url: download.data.download_url}, async (err, content) => {
             if (err) return
             await writeFile(`./events/${event_name}.js`, content).then(_ => {
-              client.commands[events_index] = require(`../events/${event_name}.js`)
+              client.events[events_index] = require(`../events/${event_name}.js`)
               message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
             })
           })
@@ -87,21 +87,23 @@ module.exports = {
             })
           })
 
-        } else if (commands_search && commands_search.data) {
+        } else if (commands_search && commands_search.data && commands_search.data.findIndex(index => (index.type == 'file' && index.name == command.args[0])) != -1) {
 
-              curl.request({url: commands_search.data.download_url}, async (err, content) => {
-                if (err) return
-                await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
-                  client.commands.push(require(`../commands/${command.args[0]}.js`))
-                  message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
-                })
+            let target = commands_search.data.find(index => (index.type == 'file' && index.name == command.args[0]))
+            curl.request({url: target.download_url}, async (err, content) => {
+              if (err) return
+              await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
+                client.commands.push(require(`../commands/${command.args[0]}.js`))
+                message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
               })
-        } else if (events_search && events_search.data ) {
+            })
+        } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name == command.args[0])) != -1) {
 
-            curl.request({url: events_search.data.download_url}, async (err, content) => {
+            let target = commands_search.data.find(index => (index.type == 'file' && index.name == command.args[0]))
+            curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
-                client.commands.push(require(`../events/${command.args[0]}.js`))
+                client.events.push(require(`../events/${command.args[0]}.js`))
                 message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
               })
             })
