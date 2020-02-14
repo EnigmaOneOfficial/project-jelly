@@ -116,7 +116,7 @@ module.exports = {
             curl.request({url: download.data.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
-                client.commands.push(require(`../event/${command.args[0]}.js`))
+                client.commands.push(require(`../events/${command.args[0]}.js`))
                 message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
               })
             })
