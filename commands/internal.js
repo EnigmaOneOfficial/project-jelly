@@ -8,6 +8,6 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-      message.channel.send('mama')
+      message.channel.send('\`\`internal testing\`\`')
     }
 }
