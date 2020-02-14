@@ -8,8 +8,9 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-        let command_index = client.commands.findIndex(command_cache => (command_cache.config.name == command.args[0] || command_cache.config.aliases.includes(command.args[0])))
-        let events_index = client.events.findIndex(event_cache => (event_cache.config.name == command.args[0] || event_cache.config.aliases.includes(command.args[0])))
+        command.args[0] = command.args[0].toLowerCase()
+        let command_index = client.commands.findIndex(command_cache => (command_cache.config.name.toLowerCase() == command.args[0] || command_cache.config.aliases.includes(command.args[0])))
+        let events_index = client.events.findIndex(event_cache => (event_cache.config.name.toLowerCase() == command.args[0] || event_cache.config.aliases.includes(command.args[0])))
 
 
         const git = client.globals.git
@@ -87,9 +88,9 @@ module.exports = {
             })
           })
 
-        } else if (commands_search && commands_search.data && commands_search.data.findIndex(index => (index.type == 'file' && index.name == `${command.args[0]}.js`)) != -1) {
+        } else if (commands_search && commands_search.data && commands_search.data.findIndex(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`)) != -1) {
 
-            let target = commands_search.data.find(index => (index.type == 'file' && index.name == `${command.args[0]}.js`))
+            let target = commands_search.data.find(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
@@ -97,9 +98,9 @@ module.exports = {
                 message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
               })
             })
-        } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name == `${command.args[0]}.js`)) != -1) {
+        } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`)) != -1) {
 
-            let target = commands_search.data.find(index => (index.type == 'file' && index.name == `${command.args[0]}.js`))
+            let target = commands_search.data.find(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
