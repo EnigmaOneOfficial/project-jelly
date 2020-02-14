@@ -20,12 +20,12 @@ module.exports = {
         let commands_search = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
-          path: `commands/`
+          path: `commands/${command.args[0]}.js`
         })
         let events_search = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
-          path: `events/`
+          path: `events/${command.args[0]}.js`
         })
 
         if (command_index != -1) {
@@ -59,17 +59,14 @@ module.exports = {
             repo: 'project-jelly',
             path: `events/${event_name}.js`
           })
-          if (download && download.data)  {
 
-            curl.request({url: download.data.download_url}, async (err, content) => {
-              if (err) return
-              await writeFile(`./events/${event_name}.js`, content).then(_ => {
-                client.commands[events_index] = require(`../events/${event_name}.js`)
-                message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
-              })
+          curl.request({url: download.data.download_url}, async (err, content) => {
+            if (err) return
+            await writeFile(`./events/${event_name}.js`, content).then(_ => {
+              client.commands[events_index] = require(`../events/${event_name}.js`)
+              message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
             })
-
-          }
+          })
 
         } else if (command.args[0] == 'globals') {
 
@@ -80,40 +77,28 @@ module.exports = {
             path: `globals.js`
           })
 
-          if (download && download.data)  {
 
-            curl.request({url: download.data.download_url}, async (err, content) => {
-              if (err) return
-              await writeFile(`./globals.js`, content).then(async (_) => {
-                client.globals = require('../globals.js')
-                await client.globals.load()
-                message.channel.send('Reloaded \`\`globals\`\`')
-              })
+          curl.request({url: download.data.download_url}, async (err, content) => {
+            if (err) return
+            await writeFile(`./globals.js`, content).then(async (_) => {
+              client.globals = require('../globals.js')
+              await client.globals.load()
+              message.channel.send('Reloaded \`\`globals\`\`')
             })
-          }
+          })
 
-        } else if (commands_search && commands_search.data && commands_search.data.findIndex(git_command => git_command.name == command.args[0]) != -1) {
-              let download = await git.repos.getContents({
-                owner: 'EnigmaOneOfficial',
-                repo: 'project-jelly',
-                path: `commands/${command.args[0]}.js`
-              })
+        } else if (commands_search && commands_search.data) {
 
-              curl.request({url: download.data.download_url}, async (err, content) => {
+              curl.request({url: commands_search.data.download_url}, async (err, content) => {
                 if (err) return
                 await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
                   client.commands.push(require(`../commands/${command.args[0]}.js`))
                   message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
                 })
               })
-        } else if (events_search && events_search.data && events_search.data.findIndex(git_event => git_event.name == command.args[0]) != -1) {
-            let download = await git.repos.getContents({
-              owner: 'EnigmaOneOfficial',
-              repo: 'project-jelly',
-              path: `events/${command.args[0]}.js`
-            })
+        } else if (events_search && events_search.data ) {
 
-            curl.request({url: download.data.download_url}, async (err, content) => {
+            curl.request({url: events_search.data.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
                 client.commands.push(require(`../events/${command.args[0]}.js`))
@@ -121,7 +106,6 @@ module.exports = {
               })
             })
         } else {
-          console.log(commands_search.data)
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
         }
     }
