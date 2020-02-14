@@ -87,6 +87,7 @@ module.exports = {
             repo: 'project-jelly',
             path: `commands/`
           })
+          console.log(commands_search)
           let commands_search_index = commands_search.findIndex(git_command => git_command.name == command.args[0])
 
           let events_search = await git.repos.getContents({
