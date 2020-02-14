@@ -89,7 +89,7 @@ module.exports = {
 
         } else if (commands_search && commands_search.data && commands_search.data.findIndex(index => (index.type == 'file' && index.name == `${command.args[0]}.js`)) != -1) {
 
-            let target = commands_search.data.find(index => (index.type == 'file' && index.name == command.args[0]))
+            let target = commands_search.data.find(index => (index.type == 'file' && index.name == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
@@ -99,7 +99,7 @@ module.exports = {
             })
         } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name == `${command.args[0]}.js`)) != -1) {
 
-            let target = commands_search.data.find(index => (index.type == 'file' && index.name == command.args[0]))
+            let target = commands_search.data.find(index => (index.type == 'file' && index.name == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
