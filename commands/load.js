@@ -64,7 +64,7 @@ module.exports = {
             } else {
               client.commands.push(require(`./${path}`))
             }
-            message.channel.send(`Reloaded command file \`\`${path}\`\``)
+            message.channel.send(`Reloaded command file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
 
         } else if (event_index != -1) {
@@ -76,7 +76,7 @@ module.exports = {
             } else {
               client.commands.push(require(`../events/${path}`))
             }
-            message.channel.send(`Reloaded event file \`\`${path}\`\``)
+            message.channel.send(`Reloaded event file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
         } else {
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
