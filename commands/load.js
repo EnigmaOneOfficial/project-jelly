@@ -56,27 +56,27 @@ module.exports = {
           })
 
         } else if (command_index != -1) {
-
-          await load_file(`commands/${commands.data[command_index].name}`, async () => {
+          let path = commands.data[command_index].name + '.js'
+          await load_file(`commands/${path}`, async () => {
             if (command_found != -1) {
-              delete require.cache[require.resolve(`./${target}.js`)]
-              client.commands.splice(command_found, 1, require(`./${target}.js`))
+              delete require.cache[require.resolve(`./${path}`)]
+              client.commands.splice(command_found, 1, require(`./${path}`))
             } else {
-              client.commands.push(require(`./${target}`))
+              client.commands.push(require(`./${path}`))
             }
-            message.channel.send(`Reloaded command file \`\`${target}\`\``)
+            message.channel.send(`Reloaded command file \`\`${path}\`\``)
           })
 
         } else if (event_index != -1) {
-
-          await load_file(`events/${events.data[event_index].name}`, async () => {
+          let path = events.data[event_index].name + '.js'
+          await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
-              delete require.cache[require.resolve(`../events/${target}.js`)]
-              client.events.splice(event_found, 1, require(`../events/${target}.js`))
+              delete require.cache[require.resolve(`../events/${path}`)]
+              client.events.splice(event_found, 1, require(`../events/${path}`))
             } else {
-              client.commands.push(require(`../events/${target}`))
+              client.commands.push(require(`../events/${path}`))
             }
-            message.channel.send(`Reloaded event file \`\`${target}\`\``)
+            message.channel.send(`Reloaded event file \`\`${path}\`\``)
           })
         } else {
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
