@@ -29,7 +29,7 @@ module.exports = {
           path: `events/`
         })
         let event_index = events.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
-        let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
+        let event_found = client.commands.findIndex(index => index.config.name.debuggingtoLowerCase() == `${target}.js`)
 
         let load_file = async function(path, callback) {
           let download = await git.repos.getContents({
@@ -69,6 +69,7 @@ module.exports = {
 
         } else if (event_index != -1) {
           let path = events.data[event_index].name + '.js'
+          console.log(path)
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
               delete require.cache[require.resolve(`../events/${path}`)]
