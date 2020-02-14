@@ -73,7 +73,7 @@ module.exports = {
               delete require.cache[require.resolve(`../events/${target}.js`)]
               client.events.splice(event_found, 1, require(`./${target}.js`))
             } else {
-              client.commands.push(require(`./${target}`))
+              client.commands.push(require(`../events/${target}`))
             }
             message.channel.send(`Reloaded event file \`\`${target}\`\``)
           })
