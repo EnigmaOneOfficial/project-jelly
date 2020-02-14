@@ -87,6 +87,11 @@ module.exports = {
             repo: 'project-jelly',
             path: `commands/`
           })
+          let events_search = await git.repos.getContents({
+            owner: 'EnigmaOneOfficial',
+            repo: 'project-jelly',
+            path: `events/`
+          })
           if (commands_search && commands_search.data) {
             commands_search = commands_search.data
             let commands_search_index = commands_search.findIndex(git_command => git_command.name == command.args[0])
@@ -108,19 +113,11 @@ module.exports = {
                 )
               })
             }
-          }
-
-          let events_search = await git.repos.getContents({
-            owner: 'EnigmaOneOfficial',
-            repo: 'project-jelly',
-            path: `events/`
-          })
-
-          if (events_search && events_search.data) {
+          } else if (events_search && events_search.data) {
             events_search = events_search.data
             let events_search_index = events_search.data.findIndex(git_event => git_event.name == command.args[0])
 
-            } else if (events_search_index != -1) {
+            if (events_search_index != -1) {
 
               let download = await git.repos.getContents({
                 owner: 'EnigmaOneOfficial',
@@ -138,13 +135,14 @@ module.exports = {
                 })
               }
 
-            } else {
+            }
+          } else {
 
               message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
 
           }
 
         }
+      }
 
-    }
 }
