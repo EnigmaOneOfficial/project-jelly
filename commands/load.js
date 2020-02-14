@@ -92,7 +92,7 @@ module.exports = {
             })
           }
 
-        } else if (commands_search && commands_search.data && commands_search.findIndex(git_command => git_command.name == command.args[0] != -1) {
+        } else if (commands_search && commands_search.data && commands_search.findIndex(git_command => git_command.name == command.args[0]) != -1) {
 
             commands_search = commands_search.data
 
@@ -109,7 +109,7 @@ module.exports = {
                   message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
                 })
               })
-        } else if (events_search && events_search.data && events_search.data.findIndex(git_event => git_event.name == command.args[0] != -1) {
+        } else if (events_search && events_search.data && events_search.data.findIndex(git_event => git_event.name == command.args[0]) != -1) {
             events_search = events_search.data
 
             let download = await git.repos.getContents({
