@@ -11,6 +11,11 @@ module.exports = {
         let command_index = client.commands.findIndex(command_cache => (command_cache.config.name == command.args[0] || command_cache.config.aliases.includes(command.args[0])))
         let events_index = client.events.findIndex(event_cache => (event_cache.config.name == command.args[0] || event_cache.config.aliases.includes(command.args[0])))
 
+        const git = client.globals.git
+        const writeFile = client.globals.writeFile
+        const readdir = client.globals.readdir
+        const curl = client.globals.curl
+
         let commands_search = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
@@ -21,11 +26,6 @@ module.exports = {
           repo: 'project-jelly',
           path: `events/`
         })
-
-        const git = client.globals.git
-        const writeFile = client.globals.writeFile
-        const readdir = client.globals.readdir
-        const curl = client.globals.curl
 
         if (command_index != -1) {
 
