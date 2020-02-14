@@ -1,8 +1,8 @@
 module.exports = {
     config: {
-        name: 'joe',
+        name: 'internal',
         description: 'internal testing command',
-        aliases: [],
+        aliases: ['i'],
         availability: ['text', 'dm'],
         auth_level: 9,
         permitted: []
