@@ -52,7 +52,7 @@ module.exports = {
             curl.request({url: download.data.download_url}, async (err, content) => {
               if (err) return
               await writeFile(`./events/${event_name}.js`, content).then(_ => {
-                client.commands[command_index] = require(`../event/${event_name}.js`)
+                client.commands[events_index] = require(`../event/${event_name}.js`)
                 message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
               })
             })
@@ -82,26 +82,62 @@ module.exports = {
 
         } else {
 
-          let commands = await readdir('./commands/')
-          let events = await readdir('./events/')
+          let commands_search = await git.repos.getContents({
+            owner: 'EnigmaOneOfficial',
+            repo: 'project-jelly',
+            path: `commands/`
+          })
+          let commands_search_index = commands_search.findIndex(git_command => git_command.name == command.args[0])
 
-          if (commands.includes(command.args[0] + '.js')) {
+          let events_search = await git.repos.getContents({
+            owner: 'EnigmaOneOfficial',
+            repo: 'project-jelly',
+            path: `events/`
+          })
+          let events_search_index = events_search.data.findIndex(git_event => git_event.name == command.args[0])
 
-            let name = command.args[0]
-            client.commands.push(require(`../commands/${name}.js`))
-            message.channel.send(`Loaded command file \`\`${name}\`\``)
+          if (commands_search_index != -1) {
 
-          } else if (events.includes(command.args[0] + '.js')) {
+            let download = await git.repos.getContents({
+              owner: 'EnigmaOneOfficial',
+              repo: 'project-jelly',
+              path: `commands/${command.args[0]}.js`
+            }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
 
-            let name = command.args[0]
-            client.events.push(require(`../events/${name}.js`))
-            message.channel.send(`Loaded event file \`\`${name}\`\``)
+            if (download && download.data) {
+              curl.request({url: download.data.download_url}, async (err, content) => {
+                if (err) return
+                await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
+                  client.commands.push(require(`../commands/${command.args[0]}.js`))
+                  message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
+                })
+              })
+            }
+
+          } else if (events_search_index != -1) {
+
+            let download = await git.repos.getContents({
+              owner: 'EnigmaOneOfficial',
+              repo: 'project-jelly',
+              path: `events/${command.args[0]}.js`
+            }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+
+            if (download && download.data) {
+              curl.request({url: download.data.download_url}, async (err, content) => {
+                if (err) return
+                await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
+                  client.commands.push(require(`../event/${command.args[0]}.js`))
+                  message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
+                })
+              })
+            }
 
           } else {
 
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
 
           }
+
         }
 
     }
