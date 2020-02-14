@@ -135,11 +135,10 @@ module.exports = {
               }
 
             }
-          } else {
-              message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
-          }
-
+        } else {
+            message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
         }
-      }
+
+    }
 
 }
