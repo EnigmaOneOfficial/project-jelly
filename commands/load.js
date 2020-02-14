@@ -11,6 +11,7 @@ module.exports = {
         let command_index = client.commands.findIndex(command_cache => (command_cache.config.name == command.args[0] || command_cache.config.aliases.includes(command.args[0])))
         let events_index = client.events.findIndex(event_cache => (event_cache.config.name == command.args[0] || event_cache.config.aliases.includes(command.args[0])))
 
+
         const git = client.globals.git
         const writeFile = client.globals.writeFile
         const readdir = client.globals.readdir
@@ -91,50 +92,42 @@ module.exports = {
             })
           }
 
-        } else if (commands_search && commands_search.data) {
+        } else if (commands_search && commands_search.data && commands_search.findIndex(git_command => git_command.name == command.args[0] != -1) {
 
             commands_search = commands_search.data
-            let commands_search_index = commands_search.findIndex(git_command => git_command.name == command.args[0])
 
-            if (commands_search_index != -1) {
+            let download = await git.repos.getContents({
+              owner: 'EnigmaOneOfficial',
+              repo: 'project-jelly',
+              path: `commands/${command.args[0]}.js`
+            }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
 
-              let download = await git.repos.getContents({
-                owner: 'EnigmaOneOfficial',
-                repo: 'project-jelly',
-                path: `commands/${command.args[0]}.js`
-              }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
-
-                curl.request({url: download.data.download_url}, async (err, content) => {
-                  if (err) return
-                  await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
-                    client.commands.push(require(`../commands/${command.args[0]}.js`))
-                    message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
-                  })
+              curl.request({url: download.data.download_url}, async (err, content) => {
+                if (err) return
+                await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
+                  client.commands.push(require(`../commands/${command.args[0]}.js`))
+                  message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
                 })
-            }
-        } else if (events_search && events_search.data) {
+              })
+        } else if (events_search && events_search.data && events_search.data.findIndex(git_event => git_event.name == command.args[0] != -1) {
             events_search = events_search.data
-            let events_search_index = events_search.data.findIndex(git_event => git_event.name == command.args[0])
 
-            if (events_search_index != -1) {
+            let download = await git.repos.getContents({
+              owner: 'EnigmaOneOfficial',
+              repo: 'project-jelly',
+              path: `events/${command.args[0]}.js`
+            }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
 
-              let download = await git.repos.getContents({
-                owner: 'EnigmaOneOfficial',
-                repo: 'project-jelly',
-                path: `events/${command.args[0]}.js`
-              }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
-
-              if (download && download.data) {
-                curl.request({url: download.data.download_url}, async (err, content) => {
-                  if (err) return
-                  await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
-                    client.commands.push(require(`../event/${command.args[0]}.js`))
-                    message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
-                  })
+            if (download && download.data) {
+              curl.request({url: download.data.download_url}, async (err, content) => {
+                if (err) return
+                await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
+                  client.commands.push(require(`../event/${command.args[0]}.js`))
+                  message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
                 })
-              }
-
+              })
             }
+
         } else {
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
         }
