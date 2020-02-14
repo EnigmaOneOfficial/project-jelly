@@ -87,18 +87,9 @@ module.exports = {
             repo: 'project-jelly',
             path: `commands/`
           })
-
-          let events_search = await git.repos.getContents({
-            owner: 'EnigmaOneOfficial',
-            repo: 'project-jelly',
-            path: `events/`
-          })
-
-          if ((commands_search && commands_search.data) || (events_search && events_search.data)) {
+          if (commands_search && commands_search.data) {
             commands_search = commands_search.data
             let commands_search_index = commands_search.findIndex(git_command => git_command.name == command.args[0])
-            events_search = events_search.data
-            let events_search_index = events_search.data.findIndex(git_event => git_event.name == command.args[0])
 
             if (commands_search_index != -1) {
 
@@ -108,15 +99,26 @@ module.exports = {
                 path: `commands/${command.args[0]}.js`
               }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
 
-              if (download && download.data) {
                 curl.request({url: download.data.download_url}, async (err, content) => {
                   if (err) return
                   await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
                     client.commands.push(require(`../commands/${command.args[0]}.js`))
                     message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
-                  })
-                })
-              }
+                  }
+                )
+              })
+            }
+          }
+
+          let events_search = await git.repos.getContents({
+            owner: 'EnigmaOneOfficial',
+            repo: 'project-jelly',
+            path: `events/`
+          })
+
+          if (events_search && events_search.data) {
+            events_search = events_search.data
+            let events_search_index = events_search.data.findIndex(git_event => git_event.name == command.args[0])
 
             } else if (events_search_index != -1) {
 
