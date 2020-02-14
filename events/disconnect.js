@@ -1,7 +1,6 @@
 module.exports = {
   config: {
-    name: 'disconnect',
-    aliases: ['dc']
+    name: 'disconnect'
   },
   exec: async (client) => {
     console.log('Client has disconnected')

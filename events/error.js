@@ -1,7 +1,6 @@
 module.exports = {
   config: {
-    name: 'error',
-    aliases: []
+    name: 'error'
   },
   exec: async (client, err) => {
     console.log('Client has errored')

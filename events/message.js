@@ -1,7 +1,6 @@
 module.exports = {
   config: {
-    name: 'message',
-    aliases: ['msg']
+    name: 'message'
   },
   exec: async (client, message) => {
     let message_read = Date.now()
@@ -93,7 +92,6 @@ module.exports = {
         } else if (message.channel.type == 'dm') {
 
         }
-
+      }
     }
-  }
 }
