@@ -1,7 +1,7 @@
 module.exports = {
   config: {
-    name: 'messageReactionAdd',
-    aliases: ['mra']
+    name: 'messageReactionRemove',
+    aliases: ['mrr']
   },
   exec: async (client, reaction, msg) => {
     console.log(reaction, msg)
