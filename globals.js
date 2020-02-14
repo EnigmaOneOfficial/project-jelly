@@ -5,7 +5,7 @@ module.exports = {
     curl: require('curlrequest'),
     config: require('./config.json'),
     SLEEP_BETWEEN_COMMAND: 0,
-    MAX_COMMAND_PARSE: 10,
+    MAX_COMMAND_PARSE: 3,
     load: async function() {
       this.promisify = this.util.promisify
       this.readdir = this.promisify(this.fs.readdir)
