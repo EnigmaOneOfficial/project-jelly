@@ -92,7 +92,7 @@ module.exports = {
             })
           }
 
-        } else if (commands_search && commands_search.data && commands_search.findIndex(git_command => git_command.name == command.args[0]) != -1) {
+        } else if (commands_search && commands_search.data && commands_search.data.findIndex(git_command => git_command.name == command.args[0]) != -1) {
 
             commands_search = commands_search.data
 
