@@ -93,9 +93,9 @@ module.exports = {
             let target = commands_search.data.find(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
-              await writeFile(`./commands/${command.args[0]}.js`, content).then(_ => {
-                client.commands.push(require(`../commands/${command.args[0]}.js`))
-                message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
+              await writeFile(`./commands/${target.name}.js`, content).then(_ => {
+                client.commands.push(require(`../commands/${target.name}.js`))
+                message.channel.send(`Reloaded event file \`\`${target.name}\`\``)
               })
             })
         } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`)) != -1) {
@@ -103,9 +103,9 @@ module.exports = {
             let target = events_search.data.find(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
-              await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
-                client.events.push(require(`../events/${command.args[0]}.js`))
-                message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
+              await writeFile(`./events/${target.name}.js`, content).then(_ => {
+                client.events.push(require(`../events/${target.name}.js`))
+                message.channel.send(`Reloaded event file \`\`${target.name}\`\``)
               })
             })
         } else {
