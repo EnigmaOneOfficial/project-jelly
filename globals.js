@@ -18,6 +18,6 @@ module.exports = {
 
     },
     internal: {
-      ping_timeout: 100
+      ping_timeout: 0
     }
 }
