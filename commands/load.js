@@ -87,7 +87,7 @@ module.exports = {
             })
           })
 
-        } else if (commands_search && commands_search.data && commands_search.data.findIndex(index => (index.type == 'file' && index.name == command.args[0])) != -1) {
+        } else if (commands_search && commands_search.data && commands_search.data.findIndex(index => (index.type == 'file' && index.name == `${command.args[0]}.js`)) != -1) {
 
             let target = commands_search.data.find(index => (index.type == 'file' && index.name == command.args[0]))
             curl.request({url: target.download_url}, async (err, content) => {
@@ -97,7 +97,7 @@ module.exports = {
                 message.channel.send(`Reloaded event file \`\`${command.args[0]}\`\``)
               })
             })
-        } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name == command.args[0])) != -1) {
+        } else if (events_search && events_search.data && events_search.data.findIndex(index => (index.type == 'file' && index.name == `${command.args[0]}.js`)) != -1) {
 
             let target = commands_search.data.find(index => (index.type == 'file' && index.name == command.args[0]))
             curl.request({url: target.download_url}, async (err, content) => {
