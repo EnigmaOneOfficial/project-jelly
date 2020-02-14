@@ -8,7 +8,7 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-        console.log(command.args[0])
+        if (command.args.length == 0) return;
         let target = command.args[0].toLowerCase()
 
         const git = client.globals.git
@@ -21,14 +21,14 @@ module.exports = {
           repo: 'project-jelly',
           path: `commands/`
         })
-        let commands_index = commands.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
+        let command_index = commands.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
         let command_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
         let events = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
           path: `events/`
         })
-        let events_index = events.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
+        let event_index = events.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
         let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
 
         let load_file = async function(path, callback) {
@@ -37,7 +37,7 @@ module.exports = {
             repo: 'project-jelly',
             path: path
           })
-          console.log(path)
+
           curl.request({url: download.data.download_url}, async (err, content) => {
             if (err) return
             await writeFile(`./${path}`, content).then(async () => {
@@ -55,9 +55,9 @@ module.exports = {
             message.channel.send('Reloaded \`\`globals\`\`')
           })
 
-        } else if (commands_index != -1) {
+        } else if (command_index != -1) {
 
-          await load_file(`commands/${target}.js`, async () => {
+          await load_file(`commands/${commands.data[command_index].name}`, async () => {
             if (command_found != -1) {
               delete require.cache[require.resolve(`./${target}.js`)]
               client.commands.splice(command_found, 1, require(`./${target}.js`))
@@ -67,9 +67,9 @@ module.exports = {
             message.channel.send(`Reloaded command file \`\`${target}\`\``)
           })
 
-        } else if (events_index != -1) {
+        } else if (event_index != -1) {
 
-          await load_file(`events/${target}.js`, async () => {
+          await load_file(`events/${events.data[event_index].name}`, async () => {
             if (event_found != -1) {
               delete require.cache[require.resolve(`../events/${target}.js`)]
               client.events.splice(event_found, 1, require(`../events/${target}.js`))
