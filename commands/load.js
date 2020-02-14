@@ -57,6 +57,7 @@ module.exports = {
 
         } else if (command_index != -1) {
           let path = commands.data[command_index].name + '.js'
+          console.log(path)
           await load_file(`commands/${path}`, async () => {
             if (command_found != -1) {
               delete require.cache[require.resolve(`./${path}`)]
