@@ -137,11 +137,10 @@ module.exports = {
                   })
                 })
               }
-            }
 
-          } else {
+            } else {
 
-            message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
+              message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
 
           }
 
