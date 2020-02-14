@@ -1,8 +1,3 @@
-const port = process.env.PORT || 3000
-app.listen(port, () => {
-  console.log(`listening on port ${port}`)
-})
-
 const discord = require('discord.js')
 const client = new discord.Client()
 
