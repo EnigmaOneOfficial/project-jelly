@@ -8,6 +8,7 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
+        console.log(command.args[0])
         let target = command.args[0].toLowerCase()
 
         const git = client.globals.git
