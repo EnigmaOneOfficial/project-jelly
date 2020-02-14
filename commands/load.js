@@ -93,14 +93,13 @@ module.exports = {
           }
 
         } else if (commands_search && commands_search.data && commands_search.data.findIndex(git_command => git_command.name == command.args[0]) != -1) {
+              commands_search = commands_search.data
 
-            commands_search = commands_search.data
-
-            let download = await git.repos.getContents({
-              owner: 'EnigmaOneOfficial',
-              repo: 'project-jelly',
-              path: `commands/${command.args[0]}.js`
-            }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+              let download = await git.repos.getContents({
+                owner: 'EnigmaOneOfficial',
+                repo: 'project-jelly',
+                path: `commands/${command.args[0]}.js`
+              })
 
               curl.request({url: download.data.download_url}, async (err, content) => {
                 if (err) return
@@ -116,18 +115,15 @@ module.exports = {
               owner: 'EnigmaOneOfficial',
               repo: 'project-jelly',
               path: `events/${command.args[0]}.js`
-            }).catch(err => message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``))
+            })
 
-            if (download && download.data) {
-              curl.request({url: download.data.download_url}, async (err, content) => {
-                if (err) return
-                await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
-                  client.commands.push(require(`../event/${command.args[0]}.js`))
-                  message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
-                })
+            curl.request({url: download.data.download_url}, async (err, content) => {
+              if (err) return
+              await writeFile(`./events/${command.args[0]}.js`, content).then(_ => {
+                client.commands.push(require(`../event/${command.args[0]}.js`))
+                message.channel.send(`Reloaded event file \`\`${event_name}\`\``)
               })
-            }
-
+            })
         } else {
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)
         }
