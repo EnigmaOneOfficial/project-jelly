@@ -20,15 +20,15 @@ module.exports = {
           repo: 'project-jelly',
           path: `commands/`
         })
-        let commands_index = commands.data.findIndex(index => (index.name.toLowerCase() == target) && (index.type == 'file'))
-        let commnd_found = client.commands.findIndex(index => index.config.name.toLowerCase() == target)
+        let commands_index = commands.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
+        let commnd_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
         let events = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
           path: `events/`
         })
-        let events_index = events.data.findIndex(index => (index.name.toLowerCase() == target) && (index.type == 'file'))
-        let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == target)
+        let events_index = events.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
+        let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
 
         let load_file = async function(path, callback) {
           let download = await git.repos.getContents({
