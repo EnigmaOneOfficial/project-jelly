@@ -93,7 +93,7 @@ module.exports = {
             let target = commands_search.data.find(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
-              await writeFile(`./commands/${target.name}.js`, content).then(_ => {
+              await writeFile(`./commands/${target.name}`, content).then(_ => {
                 client.commands.push(require(`../commands/${target.name}`))
                 message.channel.send(`Reloaded event file \`\`${target.name}\`\``)
               })
@@ -103,7 +103,7 @@ module.exports = {
             let target = events_search.data.find(index => (index.type == 'file' && index.name.toLowerCase() == `${command.args[0]}.js`))
             curl.request({url: target.download_url}, async (err, content) => {
               if (err) return
-              await writeFile(`./events/${target.name}.js`, content).then(_ => {
+              await writeFile(`./events/${target.name}`, content).then(_ => {
                 client.events.push(require(`../events/${target.name}`))
                 message.channel.send(`Reloaded event file \`\`${target.name}\`\``)
               })
