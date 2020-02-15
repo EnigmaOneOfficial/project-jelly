@@ -1,6 +1,6 @@
 module.exports = {
     config: {
-        name: 'joemama',
+        name: 'joeMama',
         description: 'internal testing command',
         aliases: [],
         availability: ['text', 'dm'],
