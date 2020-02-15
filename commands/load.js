@@ -59,7 +59,7 @@ module.exports = {
           let path = commands.data[command_index].name
           await load_file(`commands/${path}`, async () => {
             if (command_found != -1) {
-              delete require.cache[require.resolve(`./${path}`)]
+              delete require.cache[require.resolve(client.commands[command_found])]
               client.commands[command_found] = require(`./${path}`)
             } else {
               client.commands.push(require(`./${path}`))
@@ -71,7 +71,7 @@ module.exports = {
           let path = events.data[event_index].name
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
-              delete require.cache[require.resolve(`../events/${path}`)]
+              delete require.cache[require.resolve(client.events[event_found])]
               client.events[event_found] = require(`../events/${path}`)
             } else {
               client.events.push(require(`../events/${path}`))
