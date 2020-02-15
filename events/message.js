@@ -33,6 +33,8 @@ module.exports = {
             return;
         }
 
+        message.channel.send('reading commands!!')
+
         let command_parse = message.content.split(user.prefix)
         if (command_parse.length > 0) {
           command_parse = command_parse.filter(command => command != '')
