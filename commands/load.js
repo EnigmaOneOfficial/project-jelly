@@ -69,6 +69,7 @@ module.exports = {
 
         } else if (event_index != -1) {
           let path = events.data[event_index].name
+          console.log(event_found)
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
               client.removeListener(client.events[event_found].name, client.event_callbacks[event_found])
