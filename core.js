@@ -60,8 +60,7 @@ const init = async () => {
             client.globals = globals; client.event_callbacks = []
 
             client.events.forEach(function(event, index) {
-              //  client.event_callbacks[index] = async (...args) => {args.unshift(client); await client.events[index].exec.apply(null, args) }
-                client.on(events_cache[index], async (...args) => {args.unshift(client); await client.events[index].exec.apply(null, args) }) //client.event_callbacks[index])
+                client.on(events_cache[index], async (...args) => {args.unshift(client); await client.events[index].exec.apply(null, args) })
             }, client.events)
 
             client.login(config.bot_token)
