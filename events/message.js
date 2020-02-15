@@ -3,6 +3,7 @@ module.exports = {
     name: 'message'
   },
   exec: async (client, message) => {
+    console.log('hello world')
     let message_read = Date.now()
     if (!message.author.bot) {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
