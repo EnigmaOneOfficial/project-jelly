@@ -8,7 +8,6 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-      message.channel.send('loader')
         if (command.args.length == 0) return;
         let target = command.args[0].toLowerCase()
 
@@ -61,7 +60,7 @@ module.exports = {
           await load_file(`commands/${path}`, async () => {
             if (command_found != -1) {
               delete require.cache[require.resolve(`./${path}`)]
-              client.commands.splice(command_found, 1, require(`./${path}`))
+              client.commands[command_found] = require(`./${path}`)
             } else {
               client.commands.push(require(`./${path}`))
             }
@@ -73,7 +72,7 @@ module.exports = {
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
               delete require.cache[require.resolve(`../events/${path}`)]
-              client.events.splice(event_found, 1, require(`../events/${path}`))
+              client.events[event_found] = require(`../events/${path}`)
             } else {
               client.commands.push(require(`../events/${path}`))
             }
