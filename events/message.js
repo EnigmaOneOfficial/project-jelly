@@ -29,6 +29,7 @@ module.exports = {
         user = user.value
 
         if (user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < 3000)) {
+            message.reply('stop spamming noob')
             return;
         }
 
@@ -45,6 +46,7 @@ module.exports = {
               const command_index = client.commands.findIndex(command_module => (command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase())))
               if (command_index != -1) {
                   const command_module = client.commands[command_index]
+                  console.log(command_module)
                   const config = command_module.config
                   if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
                       if (config.availability.includes(message.channel.type)) {
