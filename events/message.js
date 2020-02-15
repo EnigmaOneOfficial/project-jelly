@@ -3,7 +3,6 @@ module.exports = {
     name: 'message'
   },
   exec: async (client, message) => {
-    console.log('a')
     let message_read = Date.now()
     if (!message.author.bot) {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
@@ -44,7 +43,7 @@ module.exports = {
               const args = request.split(' ')
               const command = args.shift()
 
-              const command_index = client.commands.findIndex(command_module => (command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase())))
+              const command_index = client.commands.findIndex(command_module => (command_module.config.name.toLowerCase() == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase())))
               if (command_index != -1) {
                   const command_module = client.commands[command_index]
                   const config = command_module.config

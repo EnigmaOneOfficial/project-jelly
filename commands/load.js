@@ -63,7 +63,6 @@ module.exports = {
               client.commands[command_found] = require(`./${path}`)
             } else {
               client.commands.push(require(`./${path}`))
-              console.log('requiring command')
             }
             message.channel.send(`Reloaded command file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
@@ -75,7 +74,7 @@ module.exports = {
               delete require.cache[require.resolve(`../events/${path}`)]
               client.events[event_found] = require(`../events/${path}`)
             } else {
-              client.commands.push(require(`../events/${path}`))
+              client.events.push(require(`../events/${path}`))
             }
             message.channel.send(`Reloaded event file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
