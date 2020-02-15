@@ -61,6 +61,7 @@ module.exports = {
             if (command_found != -1) {
               delete require.cache[require.resolve(`./${path}`)]
               client.commands[command_found] = require(`./${path}`)
+              console.log(client.commands)
             } else {
               client.commands.push(require(`./${path}`))
             }

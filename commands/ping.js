@@ -14,3 +14,4 @@ module.exports = {
         message.channel.send(`\`\`returned\`\` \`\`${(after - now) + (command.called_at - command.message_read)} ms\`\`\n\`\`after\`\` \`\`${client.globals.internal.ping_timeout} ms delayer\`\``)
     }
 }
+  
