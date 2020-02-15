@@ -41,6 +41,7 @@ module.exports = {
           curl.request({url: download.data.download_url}, async (err, content) => {
             if (err) return
             await writeFile(`./${path}`, content).then(async () => {
+              console.log(content)
               await callback()
             })
           })
@@ -72,8 +73,6 @@ module.exports = {
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
               delete require.cache[require.resolve(client.events[event_found])]
-              let reqevent = require(`../events/${path}`)
-              console.log(reqevent)
               client.events[event_found] = require(`../events/${path}`)
             } else {
               client.events.push(require(`../events/${path}`))
