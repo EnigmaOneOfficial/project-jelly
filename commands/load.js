@@ -63,6 +63,7 @@ module.exports = {
               client.commands[command_found] = require(`./${path}`)
             } else {
               client.commands.push(require(`./${path}`))
+              console.log('requiring command')
             }
             message.channel.send(`Reloaded command file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
