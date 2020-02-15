@@ -1,7 +1,6 @@
 module.exports = {
   config: {
-    name: 'message',
-    internal: 'a'
+    name: 'message'
   },
   exec: async (client, message) => {
     let message_read = Date.now()
