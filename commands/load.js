@@ -22,14 +22,14 @@ module.exports = {
           path: `commands/`
         })
         let command_index = commands.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
-        let command_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
+        let command_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}`)
         let events = await git.repos.getContents({
           owner: 'EnigmaOneOfficial',
           repo: 'project-jelly',
           path: `events/`
         })
         let event_index = events.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
-        let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}.js`)
+        let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}`)
 
         let load_file = async function(path, callback) {
           let download = await git.repos.getContents({
@@ -61,7 +61,6 @@ module.exports = {
             if (command_found != -1) {
               delete require.cache[require.resolve(`./${path}`)]
               client.commands[command_found] = require(`./${path}`)
-              console.log(client.commands)
             } else {
               client.commands.push(require(`./${path}`))
             }
