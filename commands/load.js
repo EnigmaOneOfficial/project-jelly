@@ -72,10 +72,10 @@ module.exports = {
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
               delete require.cache[require.resolve(client.events[event_found])]
-              client.events[event_found] = require(`../events/${path}`)
-            } else {
               let reqevent = require(`../events/${path}`)
               console.log(reqevent)
+              client.events[event_found] = require(`../events/${path}`)
+            } else {
               client.events.push(require(`../events/${path}`))
             }
             message.channel.send(`Reloaded event file \`\`${path.slice(0, path.length - 3)}\`\``)
