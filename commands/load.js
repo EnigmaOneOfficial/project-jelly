@@ -8,6 +8,7 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
+      message.channel.send('loader')
         if (command.args.length == 0) return;
         let target = command.args[0].toLowerCase()
 
