@@ -29,7 +29,7 @@ module.exports = {
           path: `events/`
         })
         let event_index = events.data.findIndex(index => (index.name.toLowerCase() == `${target}.js`) && (index.type == 'file'))
-        let event_found = client.commands.findIndex(index => index.config.name.toLowerCase() == `${target}`)
+        let event_found = client.events.findIndex(index => index.config.name.toLowerCase() == `${target}`)
 
         let load_file = async function(path, callback) {
           let download = await git.repos.getContents({
