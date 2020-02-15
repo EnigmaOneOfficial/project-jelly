@@ -41,7 +41,6 @@ module.exports = {
           curl.request({url: download.data.download_url}, async (err, content) => {
             if (err) return
             await writeFile(`./${path}`, content).then(async () => {
-              console.log(content)
               await callback()
             })
           })
@@ -72,6 +71,7 @@ module.exports = {
           let path = events.data[event_index].name
           await load_file(`events/${path}`, async () => {
             if (event_found != -1) {
+            //  client.removeListener(client.events[event_found].name, client.events[event_found].exec)
               delete require.cache[require.resolve(`../events/${path}`)]
               client.events[event_found] = require(`../events/${path}`)
             } else {
