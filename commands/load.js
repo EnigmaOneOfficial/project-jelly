@@ -78,8 +78,8 @@ module.exports = {
               client.on(client.events[event_found].name, client.event_callbacks[event_found])
             } else {
               client.events.push(require(`../events/${path}`))
-              client.event_callbacks.push(async (...args) => {args.unshift(client); await client.events[client.events.length].exec.apply(null, args) })
-              client.on(client.events[client.events.length].name, client.event_callbacks[client.events.length])
+              client.event_callbacks.push(async (...args) => {args.unshift(client); await client.events[client.events.length -1].exec.apply(null, args) })
+              client.on(client.events[client.events.length - 1].name, client.event_callbacks[client.events.length - 1])
             }
             message.channel.send(`Reloaded event file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
