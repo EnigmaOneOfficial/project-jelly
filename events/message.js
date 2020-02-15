@@ -3,6 +3,7 @@ module.exports = {
     name: 'message'
   },
   exec: async (client, message) => {
+    message.channel.send('hello world')
     let message_read = Date.now()
     if (!message.author.bot) {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
@@ -33,42 +34,44 @@ module.exports = {
         }
 
         let command_parse = message.content.split(user.prefix)
-        command_parse = command_parse.filter(command => command != '')
-        let commands = []
-        let query = []
+        if (command_parse.length > 0) {
+          command_parse = command_parse.filter(command => command != '')
+          let commands = []
+          let query = []
 
-        command_parse.forEach((request, index) => {
-            const args = request.split(' ')
-            const command = args.shift()
+          command_parse.forEach((request, index) => {
+              const args = request.split(' ')
+              const command = args.shift()
 
-            const command_index = client.commands.findIndex(command_module => command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase()))
-            if (command_index != -1) {
-                const command_module = client.commands[command_index]
-                const config = command_module.config
-                if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
-                    if (config.availability.includes(message.channel.type)) {
-                        commands.push({
-                            self: command_module,
-                            args: args.filter(arg => arg != ''),
-                            called_with: command.trimRight(),
-                            query_index: index,
-                            message_read: message_read
-                          })
-                          query.push(config.name)
-                    }
-                }
-            }
-          }, command_parse)
+              const command_index = client.commands.findIndex(command_module => (command_module.config.name == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase())))
+              if (command_index != -1) {
+                  const command_module = client.commands[command_index]
+                  const config = command_module.config
+                  if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
+                      if (config.availability.includes(message.channel.type)) {
+                          commands.push({
+                              self: command_module,
+                              args: args.filter(arg => arg != ''),
+                              called_with: command.trimRight(),
+                              query_index: index,
+                              message_read: message_read
+                            })
+                            query.push(config.name)
+                      }
+                  }
+              }
+            }, command_parse)
 
-        if (commands.length > client.globals.MAX_COMMAND_PARSE) {
-            commands = commands.slice(0, client.globals.MAX_COMMAND_PARSE)
-        }
+          if (commands.length > client.globals.MAX_COMMAND_PARSE) {
+              commands = commands.slice(0, client.globals.MAX_COMMAND_PARSE)
+          }
 
-        const original_time = Date.now()
-        for (let index = 0; index < commands.length; index++) {
-            commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
-            await commands[index].self.exec(client, message, commands[index])
-            await client.globals.sleep(client.globals.SLEEP_BETWEEN_COMMAND)
+          const original_time = Date.now()
+          for (let index = 0; index < commands.length; index++) {
+              commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
+              await commands[index].self.exec(client, message, commands[index])
+              await client.globals.sleep(client.globals.SLEEP_BETWEEN_COMMAND)
+          }
         }
 
         if (message.channel.type == 'text') {
