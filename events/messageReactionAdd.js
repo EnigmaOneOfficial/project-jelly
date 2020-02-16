@@ -5,7 +5,7 @@ module.exports = {
   exec: async (client, reaction, user) => {
     user = await client.database.users.findOne({discord_id: user.id})
     if (reaction.emoji.name == '❌' && user.auth_level >= 9) {
-      // reaction.message.channel.send('\`\`deleting message...\`\`').then(async (message) => {
+       reaction.message.channel.send('delete')
       //   await client.globals.sleep(2000)
       //   message.delete()
       // })
