@@ -7,7 +7,7 @@ module.exports = {
     if (reaction.emoji.name == '❌' && user.auth_level >= 9) {
        reaction.message.channel.send('delete').then(async (message) => {
          await client.globals.sleep(2000)
-         console.log('hi')
+         message.delete()
        })
       //   await client.globals.sleep(2000)
       //   message.delete()
