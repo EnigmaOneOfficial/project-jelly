@@ -54,7 +54,8 @@ module.exports = {
                               args: args.filter(arg => arg != ''),
                               called_with: command.trimRight(),
                               query_index: index,
-                              message_read: message_read
+                              message_read: message_read,
+                              user: user
                             })
                             query.push(config.name)
                       }

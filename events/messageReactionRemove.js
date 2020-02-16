@@ -3,6 +3,6 @@ module.exports = {
     name: 'messageReactionRemove'
   },
   exec: async (client, reaction, user) => {
-    console.log(user)
+    
   }
 }
