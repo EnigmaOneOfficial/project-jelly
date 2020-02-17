@@ -3,7 +3,7 @@ module.exports = {
     name: 'messageReactionAdd',
     internal: {
       bulk_delete_limit: 5,
-      sleep_timer: 0
+      sleep_timer: 1000
     }
   },
   exec: async (client, reaction, user, event) => {
