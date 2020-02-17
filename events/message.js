@@ -68,15 +68,15 @@ module.exports = {
               }
             }, command_parse)
 
-          if (commands.length > event.max_command_parse) {
-              commands = commands.slice(0, event.max_command_parse)
+          if (commands.length > event.internal.max_command_parse) {
+              commands = commands.slice(0, event.internal.max_command_parse)
           }
 
           const original_time = Date.now()
           for (let index = 0; index < commands.length; index++) {
               commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
               await commands[index].exec(client, message, commands[index])
-              await client.globals.sleep(event.sleep_between_command)
+              await client.globals.sleep(event.internal.sleep_between_command)
           }
         }
 
