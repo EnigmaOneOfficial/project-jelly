@@ -2,28 +2,29 @@ module.exports = {
   config: {
     name: 'messageReactionAdd',
     internal: {
-      bulk_delete_limit: 5
+      bulk_delete_limit: 5,
+      sleep_timer: 0
     }
   },
   exec: async (client, reaction, user, event) => {
     user = await client.database.users.findOne({discord_id: user.id})
     if (reaction.emoji.name == '❌' && user.auth_level >= 9 && reaction.message.deletable == true) {
       reaction.message.channel.send('\`\`deleting\`\`').then(async (message) => {
-         await client.globals.sleep(2000)
+         await client.globals.sleep(event.internal.sleep_timer)
          if (message.deleted == false) {
            message.delete()
          }
       })
-      await client.globals.sleep(2000)
+      await client.globals.sleep(event.internal.sleep_timer)
       reaction.message.delete()
     } else if (reaction.emoji.name == '💣' && user.auth_level >= 9 && reaction.message.deletable == true && reaction.message.channel.type == 'text') {
       reaction.message.channel.send(`\`\`purging ${reaction.message.author.username}\'s messages\`\``).then(async (message) => {
-         await client.globals.sleep(2000)
+         await client.globals.sleep(event.internal.sleep_timer)
          if (message.deleted == false) {
            message.delete()
          }
       })
-      await client.globals.sleep(2000)
+      await client.globals.sleep(event.internal.sleep_timer)
       reaction.message.channel.fetchMessages({limit: event.internal.bulk_delete_limit}).then(messages => {
         messages = messages.filter(message => message.author.id == reaction.message.author.id)
         reaction.message.channel.bulkDelete(messages)
