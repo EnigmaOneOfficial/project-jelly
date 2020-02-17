@@ -1,6 +1,10 @@
 module.exports = {
   config: {
-    name: 'message'
+    name: 'message',
+    internal: {
+      sleep_between_command: 0,
+      max_command_parse: 3,
+    }
   },
   exec: async (client, message) => {
     let message_read = Date.now()
@@ -50,7 +54,7 @@ module.exports = {
                   if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
                       if (config.availability.includes(message.channel.type)) {
                           commands.push({
-                              self: command_module,
+                              self: command_module.config,
                               args: args.filter(arg => arg != ''),
                               called_with: command.trimRight(),
                               query_index: index,
@@ -63,15 +67,15 @@ module.exports = {
               }
             }, command_parse)
 
-          if (commands.length > client.globals.MAX_COMMAND_PARSE) {
-              commands = commands.slice(0, client.globals.MAX_COMMAND_PARSE)
+          if (commands.length > event.max_command_parse) {
+              commands = commands.slice(0, event.max_command_parse)
           }
 
           const original_time = Date.now()
           for (let index = 0; index < commands.length; index++) {
               commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
               await commands[index].self.exec(client, message, commands[index])
-              await client.globals.sleep(client.globals.SLEEP_BETWEEN_COMMAND)
+              await client.globals.sleep(event.sleep_between_command)
           }
         }
 

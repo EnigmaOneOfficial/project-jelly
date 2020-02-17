@@ -12,8 +12,8 @@ module.exports = {
     },
     exec: async (client, message, command) => {
         let now = Date.now()
-        await client.globals.sleep(client.globals.internal.ping_timeout)
+        await client.globals.sleep(command.self.internal.delay)
         let after = Date.now()
-        message.channel.send(`\`\`returned\`\` \`\`${(after - now) + (command.called_at - command.message_read)} ms\`\`\n\`\`after\`\` \`\`0 ms delay\`\``)
+        message.channel.send(`\`\`returned\`\` \`\`${(after - now) + (command.called_at - command.message_read)} ms\`\`\n\`\`after\`\` \`\`${command.self.internal.delay} ms delay\`\``)
     }
 }

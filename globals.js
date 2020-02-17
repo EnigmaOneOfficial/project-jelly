@@ -4,8 +4,6 @@ module.exports = {
     octokit: require('@octokit/rest').Octokit,
     curl: require('curlrequest'),
     config: require('./config.json'),
-    SLEEP_BETWEEN_COMMAND: 0,
-    MAX_COMMAND_PARSE: 3,
     load: async function() {
       this.promisify = this.util.promisify
       this.readdir = this.promisify(this.fs.readdir)
@@ -15,9 +13,5 @@ module.exports = {
         auth: this.config.git_token,
         userAgent: 'project-jelly'
       })
-
-    },
-    internal: {
-      ping_timeout: 0
     }
 }
