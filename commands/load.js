@@ -74,8 +74,9 @@ module.exports = {
               delete require.cache[require.resolve(`../events/${path}`)]
               client.events[event_found] = require(`../events/${path}`)
             } else {
-              client.events.push(require(`../events/${path}`))
-              client.on(path.slice(0, path.length - 3), async (...args) => {args.unshift(client); await client.events[client.events.length - 1].exec.apply(null, args) })
+              let event_module = require(`../events/${path}`)
+              client.events.push(event_module)
+              client.on(path.slice(0, path.length - 3), async (...args) => {args.unshift(client); args.push(event_module.config); await client.events[client.events.length - 1].exec.apply(null, args) })
             }
             message.channel.send(`Reloaded event file \`\`${path.slice(0, path.length - 3)}\`\``)
           })
