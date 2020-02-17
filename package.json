@@ -20,6 +20,7 @@
     "@octokit/rest": "^16.43.1",
     "curlrequest": "^1.0.1",
     "discord.js": "^11.5.1",
-    "mongodb": "^3.5.2"
+    "mongodb": "^3.5.2",
+    "nodemailer": "^6.4.2"
   }
 }

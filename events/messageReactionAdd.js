@@ -7,10 +7,25 @@ module.exports = {
     if (reaction.emoji.name == '❌' && user.auth_level >= 9 && reaction.message.deletable == true) {
       reaction.message.channel.send('\`\`deleting\`\`').then(async (message) => {
          await client.globals.sleep(2000)
-         message.delete()
+         if (message.deleted == false) {
+           message.delete()
+         }
       })
       await client.globals.sleep(2000)
       reaction.message.delete()
+    } else if (reaction.emoji.name == '💣' && user.auth_level >= 9 && reaction.message.deletable == true) {
+      reaction.message.channel.send('\`\`purging\`\`').then(async (message) => {
+         await client.globals.sleep(2000)
+         if (message.deleted == false) {
+           message.delete()
+         }
+      })
+      await client.globals.sleep(2000)
+      reaction.message.channel.fetchMessages({limit: 100}).then(message => {
+        if (message.deletable == true) {
+          message.delete()
+        }
+      })
     }
   }
 }
