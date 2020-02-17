@@ -21,10 +21,8 @@ module.exports = {
          }
       })
       await client.globals.sleep(2000)
-      reaction.message.channel.fetchMessages({limit: 100}).then(message => {
-        if (message.deletable == true) {
-          message.delete()
-        }
+      reaction.message.channel.fetchMessages({limit: 100}).then(messages => {
+        reaction.message.channel.bulkDelete(message)
       })
     }
   }
