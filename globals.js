@@ -4,15 +4,7 @@ module.exports = {
     octokit: require('@octokit/rest').Octokit,
     curl: require('curlrequest'),
     config: require('./config.json'),
-    nodemailer: require('nodemailer').createTransport({
-      auth: {
-        user: 'ohioesports.noreply@gmail.com',
-        pass: 'LkQPQwJVb8Kfc9w'
-      }
-    },
-    {
-      from: 'ohioesports.noreply@gmail.com'
-    })
+    nodemailer: require('nodemailer'),
     load: async function() {
       this.promisify = this.util.promisify
       this.readdir = this.promisify(this.fs.readdir)
@@ -21,6 +13,15 @@ module.exports = {
       this.git = new this.octokit({
         auth: this.config.git_token,
         userAgent: 'project-jelly'
+      })
+      this.emailAuth: this.nodemailer.createTransport({
+        auth: {
+          user: 'ohioesports.noreply@gmail.com',
+          pass: 'LkQPQwJVb8Kfc9w'
+        }
+      },
+      {
+        from: 'ohioesports.noreply@gmail.com'
       })
     }
 }
