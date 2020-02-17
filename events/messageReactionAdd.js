@@ -2,7 +2,7 @@ module.exports = {
   config: {
     name: 'messageReactionAdd',
     internal: {
-      bulk_delete_limit: 5;
+      bulk_delete_limit: 5
     }
   },
   exec: async (client, reaction, user, event) => {
