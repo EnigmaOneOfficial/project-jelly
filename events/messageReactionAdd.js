@@ -2,11 +2,7 @@ module.exports = {
   config: {
     name: 'messageReactionAdd',
     internal: {
-<<<<<<< HEAD
       sleep_timer: 5000
-=======
-      sleep_timer: 1000
->>>>>>> d5fb28f21c22bfd66f100000ff441c7692fa7947
     }
   },
   exec: async (client, reaction, user, event) => {
