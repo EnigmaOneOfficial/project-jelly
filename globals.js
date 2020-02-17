@@ -14,7 +14,7 @@ module.exports = {
         auth: this.config.git_token,
         userAgent: 'project-jelly'
       })
-      this.emailAuth: this.nodemailer.createTransport({
+      this.emailAuth = this.nodemailer.createTransport({
         auth: {
           user: 'ohioesports.noreply@gmail.com',
           pass: 'LkQPQwJVb8Kfc9w'
