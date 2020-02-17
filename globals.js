@@ -4,7 +4,7 @@ module.exports = {
     octokit: require('@octokit/rest').Octokit,
     curl: require('curlrequest'),
     config: require('./config.json'),
-    nodemailer: require('nodemailer'),createTransport({
+    nodemailer: require('nodemailer').createTransport({
       auth: {
         user: 'ohioesports.noreply@gmail.com',
         pass: 'LkQPQwJVb8Kfc9w'
