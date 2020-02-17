@@ -9,9 +9,6 @@ module.exports = {
         user: 'ohioesports.noreply@gmail.com',
         pass: 'LkQPQwJVb8Kfc9w'
       }
-    },
-    {
-      from: 'ohioesports.noreply@gmail.com'
     }),
     load: async function() {
       this.promisify = this.util.promisify
