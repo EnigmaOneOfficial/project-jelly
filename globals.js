@@ -4,6 +4,15 @@ module.exports = {
     octokit: require('@octokit/rest').Octokit,
     curl: require('curlrequest'),
     config: require('./config.json'),
+    nodemailer: require('nodemailer').createTransport({
+      auth: {
+        user: 'ohioesports.noreply@gmail.com',
+        pass: 'LkQPQwJVb8Kfc9w'
+      }
+    },
+    {
+      from: 'ohioesports.noreply@gmail.com'
+    })
     load: async function() {
       this.promisify = this.util.promisify
       this.readdir = this.promisify(this.fs.readdir)
