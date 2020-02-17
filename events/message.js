@@ -2,11 +2,11 @@ module.exports = {
   config: {
     name: 'message',
     internal: {
-      sleep_between_command: 0,
-      max_command_parse: 3,
+      sleep_between_command: 50,
+      max_command_parse: 5,
     }
   },
-  exec: async (client, message) => {
+  exec: async (client, message, event) => {
     let message_read = Date.now()
     if (!message.author.bot) {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
