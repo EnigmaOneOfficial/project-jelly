@@ -36,47 +36,48 @@ module.exports = {
             message.reply('stop spamming noob')
             return;
         }
+        if (message.content.startsWith(user.prefix)) {
+          let command_parse = message.content.split(user.prefix)
+          if (command_parse.length > 0) {
+            command_parse = command_parse.filter(command => command != '')
+            let commands = []
+            let query = []
 
-        let command_parse = message.content.split(user.prefix)
-        if (command_parse.length > 0) {
-          command_parse = command_parse.filter(command => command != '')
-          let commands = []
-          let query = []
+            command_parse.forEach((request, index) => {
+                const args = request.split(' ')
+                const command = args.shift()
 
-          command_parse.forEach((request, index) => {
-              const args = request.split(' ')
-              const command = args.shift()
+                const command_index = client.commands.findIndex(command_module => (command_module.config.name.toLowerCase() == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase())))
+                if (command_index != -1) {
+                    const command_module = client.commands[command_index]
+                    const config = command_module.config
+                    if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
+                        if (config.availability.includes(message.channel.type)) {
+                            commands.push({
+                                self: command_module.config,
+                                args: args.filter(arg => arg != ''),
+                                called_with: command.trimRight(),
+                                query_index: index,
+                                message_read: message_read,
+                                user: user,
+                                exec: command_module.exec
+                              })
+                              query.push(config.name)
+                        }
+                    }
+                }
+              }, command_parse)
 
-              const command_index = client.commands.findIndex(command_module => (command_module.config.name.toLowerCase() == command.toLowerCase() || command_module.config.aliases.includes(command.toLowerCase())))
-              if (command_index != -1) {
-                  const command_module = client.commands[command_index]
-                  const config = command_module.config
-                  if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
-                      if (config.availability.includes(message.channel.type)) {
-                          commands.push({
-                              self: command_module.config,
-                              args: args.filter(arg => arg != ''),
-                              called_with: command.trimRight(),
-                              query_index: index,
-                              message_read: message_read,
-                              user: user,
-                              exec: command_module.exec
-                            })
-                            query.push(config.name)
-                      }
-                  }
-              }
-            }, command_parse)
+            if (commands.length > event.internal.max_command_parse) {
+                commands = commands.slice(0, event.internal.max_command_parse)
+            }
 
-          if (commands.length > event.internal.max_command_parse) {
-              commands = commands.slice(0, event.internal.max_command_parse)
-          }
-
-          const original_time = Date.now()
-          for (let index = 0; index < commands.length; index++) {
-              commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
-              await commands[index].exec(client, message, commands[index])
-              await client.globals.sleep(event.internal.sleep_between_command)
+            const original_time = Date.now()
+            for (let index = 0; index < commands.length; index++) {
+                commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
+                await commands[index].exec(client, message, commands[index])
+                await client.globals.sleep(event.internal.sleep_between_command)
+            }
           }
         }
 
