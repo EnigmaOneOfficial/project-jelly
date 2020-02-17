@@ -59,7 +59,8 @@ module.exports = {
                               called_with: command.trimRight(),
                               query_index: index,
                               message_read: message_read,
-                              user: user
+                              user: user,
+                              exec: command_module.exec
                             })
                             query.push(config.name)
                       }
@@ -74,7 +75,7 @@ module.exports = {
           const original_time = Date.now()
           for (let index = 0; index < commands.length; index++) {
               commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
-              await commands[index].self.exec(client, message, commands[index])
+              await commands[index].exec(client, message, commands[index])
               await client.globals.sleep(event.sleep_between_command)
           }
         }
