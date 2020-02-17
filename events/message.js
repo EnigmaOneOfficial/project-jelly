@@ -33,9 +33,10 @@ module.exports = {
         })
         user = user.value
 
-        if (!(user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < event.internal.spam_detection))) {
+        if (user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < event.internal.spam_detection)) {
             return;
         }
+
         if (message.content.startsWith(user.prefix)) {
           let command_parse = message.content.split(user.prefix)
           if (command_parse.length > 0) {
