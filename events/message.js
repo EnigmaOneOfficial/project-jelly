@@ -4,6 +4,7 @@ module.exports = {
     internal: {
       sleep_between_command: 1000,
       max_command_parse: 50,
+      spam_detection: 2000
     }
   },
   exec: async (client, message, event) => {
@@ -32,8 +33,7 @@ module.exports = {
         })
         user = user.value
 
-        if (user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < 3000)) {
-            message.reply('stop spamming noob')
+        if (!(user.stored_messages.length >= 4 && (Date.now() - user.stored_messages[4].created < event.internal.spam_detection))) {
             return;
         }
         if (message.content.startsWith(user.prefix)) {
