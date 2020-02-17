@@ -5,7 +5,10 @@ module.exports = {
         aliases: [],
         availability: ['text', 'dm'],
         auth_level: 0,
-        permitted: []
+        permitted: [],
+        internal: {
+          delay: 5
+        }
     },
     exec: async (client, message, command) => {
         let now = Date.now()

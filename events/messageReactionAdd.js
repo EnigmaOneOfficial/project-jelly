@@ -1,8 +1,11 @@
 module.exports = {
   config: {
-    name: 'messageReactionAdd'
+    name: 'messageReactionAdd',
+    internal: {
+      bulk_delete_limit: 5;
+    }
   },
-  exec: async (client, reaction, user) => {
+  exec: async (client, reaction, user, event) => {
     user = await client.database.users.findOne({discord_id: user.id})
     if (reaction.emoji.name == '❌' && user.auth_level >= 9 && reaction.message.deletable == true) {
       reaction.message.channel.send('\`\`deleting\`\`').then(async (message) => {
@@ -21,7 +24,7 @@ module.exports = {
          }
       })
       await client.globals.sleep(2000)
-      reaction.message.channel.fetchMessages({limit: 100}).then(messages => {
+      reaction.message.channel.fetchMessages({limit: event.internal.bulk_delete_limit}).then(messages => {
         messages = messages.filter(message => message.author.id == reaction.message.author.id)
         reaction.message.channel.bulkDelete(messages)
       })
