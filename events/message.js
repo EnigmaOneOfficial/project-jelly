@@ -14,7 +14,13 @@ module.exports = {
             $setOnInsert: {
                 discord_id: message.author.id,
                 auth_level: 0,
-                prefix: '.'
+                prefix: '.',
+                verification: {
+                  verified: false,
+                  code: 00000,
+                  sent: 0,
+                  email: ''
+                }
             },
             $inc: {
                 total_message_count: 1
@@ -98,6 +104,17 @@ module.exports = {
                 upsert: true,
                 returnOriginal: false
             })
+        } else if (message.channel.type == 'dm') {
+          if (message.content.length == 5 && isNaN(message.content) == false && user.verification.code == message.content) {
+            await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
+              $set: {
+                'verification.verified': true,
+              }
+            }, {returnOriginal: false}).then((user) => {
+              user = user.value
+              message.channel.send(`You have verified yourself with the email \`\`${user.verification.email}\`\``)
+            })
+          }
         }
       }
     }
