@@ -24,7 +24,7 @@ module.exports = {
          }
       })
       await client.globals.sleep(event.internal.time_to_delete)
-      await reaction.message.channel.fetchMessages({limit: 100}).then(messages => {
+      await reaction.message.channel.fetchMessages({limit: 100, before: reaction.message.id}).then(messages => {
         messages = messages.filter(message => (message.author.id == reaction.message.author.id && message.deletable == true))
         reaction.message.channel.bulkDelete(messages)
       })
