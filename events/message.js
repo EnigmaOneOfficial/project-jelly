@@ -118,7 +118,7 @@ module.exports = {
                   'verification.code': 0
                 }
               }, {returnOriginal: false}).then(async (user) => {
-                client.globals.sleep(2000)
+                await client.globals.sleep(2000)
                 message.edit(`\`\`verified\`\`\n\`\`${user.value.verification.email}\`\``)
               })
             })
