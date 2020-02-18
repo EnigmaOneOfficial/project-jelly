@@ -88,6 +88,9 @@ module.exports = {
             for (let index = 0; index < commands.length; index++) {
                 commands[index].called_at = Date.now(); commands[index].original_time = original_time; commands[index].query = query
                 await commands[index].exec(client, message, commands[index])
+                if (commands[index].self.cooldown && commands[index].self.cooldown > 0 && commands[index].self.cooldown < 10000) {
+                  await client.globals.sleep(commands[index].self.cooldown)
+                }
                 await client.globals.sleep(event.internal.sleep_between_command)
             }
           }
