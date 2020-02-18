@@ -9,8 +9,7 @@ module.exports = {
     },
     exec: async (client, message, command) => {
         let email = command.args[0]
-        if (command.user.prefix == '.') email = command.args.join('.')
-        console.log(email)
+        if (command.user.prefix == '.') email = command.args[0] + '.com'
         await client.globals.nodemailer.sendMail({
           from: 'ohioesports.noreply@gmail.com',
           to: email,
