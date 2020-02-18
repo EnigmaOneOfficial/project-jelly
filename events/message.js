@@ -59,8 +59,8 @@ module.exports = {
                 if (command_index != -1) {
                     const command_module = client.commands[command_index]
                     const config = command_module.config
-                    if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(message.channel.type)
-                      && user.cooldowns[config.name] && config.cooldown && Date.now() - user.cooldowns[config.name] > config.cooldown) {
+                    if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(message.channel.type
+                      (user.cooldowns[config.name] != null && config.cooldown && Date.now() - user.cooldowns[config.name] > config.cooldown) || user.cooldowns[config.name] == null) {
                           commands.push({
                               self: command_module.config,
                               args: args.filter(arg => arg != ''),
@@ -72,8 +72,8 @@ module.exports = {
                               message: message
                             })
                             query.push(config.name)
+                        }
                     }
-                }
               }, command_parse)
 
             if (commands.length > event.internal.max_command_parse) {
