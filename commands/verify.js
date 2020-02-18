@@ -27,7 +27,7 @@ module.exports = {
                   code: random,
                   sent: Date.now(),
                   email: email,
-                  domain: email.search(/(?<=@)(.+)/)
+                  domain: email.slice(email.search(/(?<=@)(.+)/), email.length)
                 }
               }
             })

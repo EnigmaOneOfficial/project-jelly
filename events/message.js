@@ -2,8 +2,8 @@ module.exports = {
   config: {
     name: 'message',
     internal: {
-      sleep_between_command: 1000,
-      max_command_parse: 50,
+      sleep_between_command: 0,
+      max_command_parse: 5,
       spam_detection: 2000
     }
   },
