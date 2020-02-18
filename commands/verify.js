@@ -2,7 +2,7 @@ module.exports = {
     config: {
         name: 'verify',
         description: 'Verify yourself through an email',
-        aliases: [],
+        aliases: ['link'],
         availability: ['text', 'dm'],
         auth_level: 0,
         permitted: [],
@@ -32,7 +32,7 @@ module.exports = {
                 'cooldowns.verify': Date.now()
               }
             })
-            message.author.send('Please enter the verification code that we sent to your email.\nIf the email you tried to verify with was incorrect, please try to verify again.')
+            message.author.send(`An email has been sent to \`\`${email}\`\`\nTo finish verifying your account, enter the 5 digit code sent to your email.`)
           }
         })
     }
