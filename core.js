@@ -52,7 +52,7 @@ const init = async () => {
                     break;
             }
 
-            const mongo = await new require('mongodb').MongoClient
+            const mongo = await new (require('mongodb')).MongoClient
             const connection = await mongo.connect(config.mongo_token, {useNewUrlParser: true, useUnifiedTopology: true})
             const database = connection.db('discord')
 

@@ -13,7 +13,6 @@ module.exports = {
 
         const git = client.globals.git
         const writeFile = client.globals.writeFile
-        const readdir = client.globals.readdir
         const curl = client.globals.curl
 
         let commands = await git.repos.getContents({

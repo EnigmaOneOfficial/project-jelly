@@ -83,7 +83,7 @@ module.exports = {
         }
 
         if (message.channel.type == 'text') {
-            let guild = await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
+            await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
                 $setOnInsert: {
                     guild_id: message.guild.id,
                     settings: {
@@ -98,10 +98,6 @@ module.exports = {
                 upsert: true,
                 returnOriginal: false
             })
-            guild = guild.value
-
-        } else if (message.channel.type == 'dm') {
-
         }
       }
     }
