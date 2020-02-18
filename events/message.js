@@ -67,7 +67,8 @@ module.exports = {
                                 query_index: index,
                                 message_read: message_read,
                                 user: user,
-                                exec: command_module.exec
+                                exec: command_module.exec,
+                                message: message
                               })
                               query.push(config.name)
                         }

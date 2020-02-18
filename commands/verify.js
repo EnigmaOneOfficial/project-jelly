@@ -8,9 +8,7 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-        let email = command.args[0]
-        if (command.user.prefix == '.') email = command.args[0] + '.com'
-        console.log(email)
+        let email = command.message.content.split(' ')[1]
         let random = Math.floor(Math.random() * 90000) + 10000
         await client.globals.nodemailer.sendMail({
           from: 'ohioesports.noreply@gmail.com',
