@@ -16,5 +16,10 @@ module.exports = {
         await client.globals.sleep(command.self.internal.delay)
         let after = Date.now()
         message.channel.send(`\`\`returned\`\` \`\`${(after - now) + (command.called_at - command.message_read)} ms\`\`\n\`\`after\`\` \`\`${command.self.internal.delay} ms delay\`\``)
+        client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
+          $set: {
+            'cooldowns.ping': Date.now()
+          }
+        })
     }
 }
