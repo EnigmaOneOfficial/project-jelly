@@ -15,7 +15,7 @@ module.exports = {
           from: 'ohioesports.noreply@gmail.com',
           to: email,
           subject: 'Discord Verification',
-          text: `To verify your account, respond to the bot\`s DM with the code ${random}`
+          text: `To verify your account, respond to the bot\'s DM with the code ${random}`
         }, (err, info) => {
           if (err) {
             message.channel.send(`Could not send verification email to \`\`${email}\`\``)
