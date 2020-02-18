@@ -110,7 +110,7 @@ module.exports = {
                 returnOriginal: false
             })
         } else if (channel_type == 'dm') {
-          if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content) {
+          if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content && user.verification.verified == false) {
             let author_id = message.author.id
             message.channel.send(`\`\`verifying...\`\``).then(async (message) => {
               let updated_user = await client.database.users.findOneAndUpdate({discord_id: author_id}, {
@@ -120,7 +120,7 @@ module.exports = {
                 }
               }, {returnOriginal: false, upsert: true})
               await client.globals.sleep(2000)
-              message.edit(`\`\`verified\`\`\n\`\`${updated_user.value.verification.email}\`\``)
+              message.edit(`\`\`verified with\`\`\n\`\`${updated_user.value.verification.email}\`\``)
             })
           }
         }
