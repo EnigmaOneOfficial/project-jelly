@@ -17,7 +17,7 @@ module.exports = {
                 prefix: '.',
                 verification: {
                   verified: false,
-                  code: 00000,
+                  code: 0,
                   sent: 0,
                   email: ''
                 }
@@ -109,6 +109,7 @@ module.exports = {
             await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
               $set: {
                 'verification.verified': true,
+                'verification.code': 0
               }
             }, {returnOriginal: false}).then((user) => {
               user = user.value
