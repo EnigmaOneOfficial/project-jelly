@@ -61,7 +61,7 @@ module.exports = {
                     const command_module = client.commands[command_index]
                     const config = command_module.config
                     if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(channel_type) &&
-                      (user.cooldowns[config.name] && config.cooldown && Date.now() - user.cooldowns[config.name] > config.cooldown) || !user.cooldowns[config.name]) {
+                      (user.cooldowns[config.name] && config.cooldown && message_read - user.cooldowns[config.name] > config.cooldown) || !user.cooldowns[config.name]) {
                           commands.push({
                               self: command_module.config,
                               args: args.filter(arg => arg != ''),
@@ -73,7 +73,10 @@ module.exports = {
                               message: message
                             })
                             query.push(config.name)
-                        }
+                      } else if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(channel_type) &&
+                        user.cooldowns[config.name] && config.cooldown && message_read - user.cooldowns[config.name] > config.cooldown < config.cooldown) {
+                          message.channel.send(`you can not use that command for \`\`${config.cooldown - (message_read - user.cooldowns[config.name])}\`\``)
+                      }
                     }
               }, command_parse)
 
@@ -115,7 +118,7 @@ module.exports = {
               }
             }, {returnOriginal: false}).then((user) => {
               user = user.value
-              message.channel.send(`\`\`verified\`\` \`\`${user.verification.email}\`\``)
+              message.channel.send(`\`\`verified\`\`\n\`\`${user.verification.email}\`\``)
             })
           }
         }
