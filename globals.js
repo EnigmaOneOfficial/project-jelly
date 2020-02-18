@@ -5,6 +5,7 @@ module.exports = {
     curl: require('curlrequest'),
     config: require('./config.json'),
     nodemailer: require('nodemailer').createTransport({
+      service: 'gmail',
       auth: {
         user: 'ohioesports.noreply@gmail.com',
         pass: 'LkQPQwJVb8Kfc9w'
