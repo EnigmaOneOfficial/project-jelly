@@ -6,7 +6,7 @@ module.exports = {
         availability: ['text', 'dm'],
         auth_level: 0,
         permitted: [],
-        cooldown: 30000
+        cooldown: 300000
     },
     exec: async (client, message, command) => {
         let email = command.message.content.split(' ')[1]
