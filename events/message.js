@@ -111,14 +111,16 @@ module.exports = {
             })
         } else if (channel_type == 'dm') {
           if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content) {
-            await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
-              $set: {
-                'verification.verified': true,
-                'verification.code': 0
-              }
-            }, {returnOriginal: false}).then((user) => {
-              user = user.value
-              message.channel.send(`\`\`verified\`\`\n\`\`${user.verification.email}\`\``)
+            message.channel.send(`\`\`verifying...\`\``).then(async (message) => {
+              await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
+                $set: {
+                  'verification.verified': true,
+                  'verification.code': 0
+                }
+              }, {returnOriginal: false}).then(async (user) => {
+                client.globals.sleep(2000)
+                message.edit(`\`\`verified\`\`\n\`\`${user.value.verification.email}\`\``)
+              })
             })
           }
         }
