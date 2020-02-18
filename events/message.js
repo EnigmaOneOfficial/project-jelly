@@ -105,7 +105,7 @@ module.exports = {
                 returnOriginal: false
             })
         } else if (message.channel.type == 'dm') {
-          if (message.content.length == 5 && isNaN(message.content) == false && user.verification.code == message.content) {
+          if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content) {
             await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
               $set: {
                 'verification.verified': true,
@@ -113,7 +113,7 @@ module.exports = {
               }
             }, {returnOriginal: false}).then((user) => {
               user = user.value
-              message.channel.send(`You have verified yourself with the email \`\`${user.verification.email}\`\``)
+              message.channel.send(`\`\`verified\`\` \`\`${user.verification.email}\`\``)
             })
           }
         }

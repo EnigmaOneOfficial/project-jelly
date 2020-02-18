@@ -26,7 +26,8 @@ module.exports = {
                   verified: false,
                   code: random,
                   sent: Date.now(),
-                  email: email
+                  email: email,
+                  domain: email.search(/(?<=@)(.+)/)
                 }
               }
             })
