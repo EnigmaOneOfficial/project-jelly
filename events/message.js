@@ -9,6 +9,7 @@ module.exports = {
   },
   exec: async (client, message, event) => {
     let message_read = Date.now()
+    const channel_type = message.channel.type
     if (!message.author.bot) {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
             $setOnInsert: {
@@ -59,7 +60,7 @@ module.exports = {
                 if (command_index != -1) {
                     const command_module = client.commands[command_index]
                     const config = command_module.config
-                    if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(message.channel.type) &&
+                    if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(channel_type) &&
                       (user.cooldowns[config.name] && config.cooldown && Date.now() - user.cooldowns[config.name] > config.cooldown) || !user.cooldowns[config.name]) {
                           commands.push({
                               self: command_module.config,
@@ -89,7 +90,7 @@ module.exports = {
           }
         }
 
-        if (message.channel.type == 'text') {
+        if (channel_type == 'text') {
             await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
                 $setOnInsert: {
                     guild_id: message.guild.id,
@@ -105,7 +106,7 @@ module.exports = {
                 upsert: true,
                 returnOriginal: false
             })
-        } else if (message.channel.type == 'dm') {
+        } else if (channel_type == 'dm') {
           if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content) {
             await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
               $set: {
