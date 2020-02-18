@@ -5,7 +5,8 @@ module.exports = {
         aliases: [],
         availability: ['text', 'dm'],
         auth_level: 0,
-        permitted: []
+        permitted: [],
+        cooldown: 30000
     },
     exec: async (client, message, command) => {
         let email = command.message.content.split(' ')[1]
@@ -27,7 +28,8 @@ module.exports = {
                   sent: Date.now(),
                   email: email,
                   domain: email.slice(email.search(/(?<=@)(.+)/), email.length)
-                }
+                },
+                'cooldowns.verify': Date.now()
               }
             })
             message.author.send('Please enter the verification code that we sent to your email.\nIf the email you tried to verify with was incorrect, please try to verify again.')

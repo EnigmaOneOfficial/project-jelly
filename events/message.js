@@ -20,7 +20,8 @@ module.exports = {
                   code: 0,
                   sent: 0,
                   email: ''
-                }
+                },
+                cooldowns: {},
             },
             $inc: {
                 total_message_count: 1
@@ -58,20 +59,19 @@ module.exports = {
                 if (command_index != -1) {
                     const command_module = client.commands[command_index]
                     const config = command_module.config
-                    if (user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) {
-                        if (config.availability.includes(message.channel.type)) {
-                            commands.push({
-                                self: command_module.config,
-                                args: args.filter(arg => arg != ''),
-                                called_with: command.trimRight(),
-                                query_index: index,
-                                message_read: message_read,
-                                user: user,
-                                exec: command_module.exec,
-                                message: message
-                              })
-                              query.push(config.name)
-                        }
+                    if ((user.auth_level >= config.auth_level || config.permitted.includes(message.author.id)) && config.availability.includes(message.channel.type)
+                      && config.cooldown && Date.now() - user.cooldowns[config.name] > config.cooldown) {
+                          commands.push({
+                              self: command_module.config,
+                              args: args.filter(arg => arg != ''),
+                              called_with: command.trimRight(),
+                              query_index: index,
+                              message_read: message_read,
+                              user: user,
+                              exec: command_module.exec,
+                              message: message
+                            })
+                            query.push(config.name)
                     }
                 }
               }, command_parse)
