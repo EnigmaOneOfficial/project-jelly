@@ -119,7 +119,7 @@ module.exports = {
                 }
               }, {returnOriginal: false}).then(async (user) => {
                 await client.globals.sleep(2000)
-                message.edit(`\`\`verified\`\`\n\`\`${user.value.verification.email}\`\``)
+                message.edit(`\`\`verified\`\`\n\`\`${user.verification.email}\`\``)
               })
             })
           }
