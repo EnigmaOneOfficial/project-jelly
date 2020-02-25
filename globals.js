@@ -4,6 +4,7 @@ module.exports = {
     octokit: require('@octokit/rest').Octokit,
     curl: require('curlrequest'),
     config: require('./config.json'),
+    http: require('http'),
     nodemailer: require('nodemailer').createTransport({
       service: 'gmail',
       auth: {
