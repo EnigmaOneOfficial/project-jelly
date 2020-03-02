@@ -6,9 +6,9 @@ module.exports = {
         availability: ['text', 'dm'],
         auth_level: 0,
         permitted: [],
-        cooldown: 2000,
+        cooldown: 0,
         internal: {
-          delay: 100
+          delay: 0;
         }
     },
     exec: async (client, message, command) => {
