@@ -13,7 +13,6 @@ module.exports = {
 
     let guild = await client.database.guilds.findOne({guild_id: reaction.message.guild.id})
     let chart = guild.role_charts[reaction.message.id]
-    let reactions = chart.reactions
 
     if (chart) {
       if (chart.index != chart.length && chart.creator == user.id && reaction.emoji.id == null) {
@@ -37,7 +36,7 @@ module.exports = {
             await message.react(reaction.emoji.name)
             await reaction.users.remove(user.id)
         })
-      } else if (chart.index == chart.length && reactions.includes(reaction.emoji.name)) {
+      } else if (chart.index == chart.length && chart.reactions.includes(reaction.emoji.name)) {
         let index = chart.reactions.findIndex(emoji => emoji == reaction.emoji.name)
         let role = await message.guild.roles.fetch(chart.roles[index])
 

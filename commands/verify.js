@@ -19,6 +19,7 @@ module.exports = {
         }, async (err, info) => {
           if (err) {
             message.channel.send(`\`\`Could not send email to ${email}\`\``)
+            console.log(err)
           } else {
             client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
               $set: {
