@@ -15,6 +15,7 @@ module.exports = {
         let user = await client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
             $setOnInsert: {
                 discord_id: message.author.id,
+                name: message.author.username,
                 auth_level: 0,
                 prefix: '.',
                 verification: {
