@@ -1,15 +1,14 @@
-const discord = require('discord.js')
-const client = new discord.Client()
-
 const config = require('./config.json')
 
 const globals = require('./globals.js')
 
 const init = async () => {
     await globals.load()
+    const discord = globals.discord
+    const client = new discord.Client()
+
     const readdir = globals.readdir
 
-    console.log('Initializing client... ')
     client.events = await readdir('./events/').catch(_ => console.log('Could not find directory'))
 
     if (client.events && client.events.length > 0) {
@@ -58,7 +57,7 @@ const init = async () => {
             const database = connection.db('discord')
 
             database.users = database.collection('users'); database.guilds = database.collection('guilds'); client.database = database;
-            client.globals = globals; client.event_callbacks = []
+            client.globals = globals;
 
             client.events.forEach(function(event, index) {
                 client.on(events_cache[index], async (...args) => {args.unshift(client); args.push(event.config); await client.events[index].exec.apply(null, args) })

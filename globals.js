@@ -1,4 +1,5 @@
 module.exports = {
+    discord: require('discord.js'),
     util: require('util'),
     fs: require('fs'),
     octokit: require('@octokit/rest').Octokit,

@@ -2,11 +2,10 @@ module.exports = {
     config: {
         name: 'verify',
         description: 'Verify yourself through an email',
-        aliases: ['link'],
-        availability: ['text', 'dm'],
+        aliases: [],
+        availability: ['text'],
         auth_level: 0,
-        permitted: [],
-        cooldown: 300000
+        permitted: []
     },
     exec: async (client, message, command) => {
         let email = command.message.content.split(' ')[1]
@@ -15,24 +14,24 @@ module.exports = {
           from: 'ohioesports.noreply@gmail.com',
           to: email,
           subject: 'Discord Verification',
-          text: `To verify your account, respond to the bot\'s DM with the code ${random}`
-        }, (err, info) => {
+          html: `To finish verification, reply to the bot with the code <b>${random}</b>`
+        }, async (err, info) => {
           if (err) {
-            message.channel.send(`Could not send verification email to \`\`${email}\`\``)
+            message.channel.send(`\`\`Could not send email to ${email}\`\``)
           } else {
             client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
               $set: {
                 verification: {
-                  verified: false,
+                  status: 'verifying',
                   code: random,
-                  sent: Date.now(),
                   email: email,
-                  domain: email.slice(email.search(/(?<=@)(.+)/), email.length)
-                },
-                'cooldowns.verify': Date.now()
+                  domain: email.slice(email.search(/(?<=@)(.+)/), email.length),
+                  guild: message.guild.id
+                }
               }
             })
-            message.author.send(`An email has been sent to \`\`${email}\`\`\nTo finish verifying your account, enter the 5 digit code sent to your email.`)
+            message.author.send(`\`\`An email has been sent to ${email}\`\`\n\`\`Please enter the 5 digit code that was sent\`\``)
+            message.delete()
           }
         })
     }
