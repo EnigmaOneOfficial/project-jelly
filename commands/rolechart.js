@@ -9,6 +9,7 @@ module.exports = {
     },
     exec: async (client, message, command) => {
       let roles = message.mentions.roles
+      if (roles.array().length > 20) return
       let embed = {embed: {
         fields: [],
         footer: {
@@ -22,10 +23,10 @@ module.exports = {
         role_ids.push(role.id)
         switch(index) {
           case 0:
-            embed.embed.fields.push({name: `**${role.name} / ${role.members.array().length}  members**`, value: '**React to select an emoji for this role**', inline: false})
+            embed.embed.fields.push({name: `**${role.name} / ${role.members.size} members**`, value: '**React to select an emoji for this role**', inline: false})
             break;
           default:
-            embed.embed.fields.push({name: `**${role.name} / ${role.members.array().length} members**`, value: '...', inline: false})
+            embed.embed.fields.push({name: `**${role.name} / ${role.members.size} members**`, value: '...', inline: false})
             break;
         }
         index++
@@ -33,24 +34,23 @@ module.exports = {
 
       message.channel.send(embed).then(async message => {
         embed.embed.footer.text = 'id: ' + message.id
-
-      let guild = await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
-          $set: {
-            [`role_charts.${message.id}`]: {
-              index: 0,
-              length: index,
-              creator: command.called_by,
-              embed: embed,
-              reactions: [],
-              roles: role_ids
+        await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
+            $set: {
+              [`role_charts.${message.id}`]: {
+                index: 0,
+                length: index,
+                creator: command.called_by,
+                embed: embed,
+                reactions: [],
+                roles: role_ids
+              }
+            },
+            $push: {
+              role_chart_ids: message.id
             }
-          },
-          $push: {
-            role_chart_ids: message.id
-          }
+          })
+          message.edit(embed)
         })
-        message.edit(embed)
-      })
 
     }
 }

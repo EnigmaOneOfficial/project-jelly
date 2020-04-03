@@ -2,7 +2,7 @@ module.exports = {
   config: {
     name: 'messageReactionAdd',
     internal: {
-      time_to_delete: 2000
+      time_to_delete: 0
     }
   },
   exec: async (client, reaction, user, event) => {
@@ -13,9 +13,10 @@ module.exports = {
 
     let guild = await client.database.guilds.findOne({guild_id: reaction.message.guild.id})
     let chart = guild.role_charts[reaction.message.id]
+    let reactions = chart.reactions
 
-    if (chart != null) {
-      if (chart.index != chart.length && chart.creator == user.id) {
+    if (chart) {
+      if (chart.index != chart.length && chart.creator == user.id && reaction.emoji.id == null) {
         chart.embed.embed.fields[chart.index].value = reaction.emoji.name
         if (chart.index + 1 != chart.length) {
           chart.embed.embed.fields[chart.index + 1].value = '**React to select an emoji for this role**'
@@ -33,17 +34,17 @@ module.exports = {
           }
         })
         message.edit(chart.embed).then(async message => {
-          await message.react(reaction.emoji.name)
-          await reaction.users.remove(user.id)
+            await message.react(reaction.emoji.name)
+            await reaction.users.remove(user.id)
         })
-      } else if (chart.index == chart.length) {
+      } else if (chart.index == chart.length && reactions.includes(reaction.emoji.name)) {
         let index = chart.reactions.findIndex(emoji => emoji == reaction.emoji.name)
         let role = await message.guild.roles.fetch(chart.roles[index])
 
         if (role && !member.roles.cache.has(role.id)) {
           await member.roles.add(role)
-          chart.embed.embed.fields[index].name = `**${role.name} / ${role.members.array().length} members**`
-          message.edit(chart.embed)
+          chart.embed.embed.fields[index].name = `**${role.name} / ${role.members.size} members**`
+          await message.edit(chart.embed)
           await client.database.guilds.findOneAndUpdate({guild_id: reaction.message.guild.id}, {
             $set: {
               [`role_charts.${reaction.message.id}.embed`]: chart.embed
@@ -51,14 +52,9 @@ module.exports = {
           })
         }
 
+      } else if (chart.index == chart.length || reaction.emoji.id != null) {
+        await reaction.remove()
       }
-    } else if (reaction.emoji.name == '❌' && user.auth_level >= 9 && reaction.message.deletable == true && reaction.message.channel.type == 'text') {
-      reaction.message.channel.send('\`\`deleting\`\`').then(async (message) => {
-         await client.globals.sleep(event.internal.time_to_delete)
-         if (message.deleted == false) {
-           message.delete()
-         }
-      })
     }
   }
 }

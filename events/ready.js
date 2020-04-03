@@ -25,7 +25,7 @@ module.exports = {
         for (let index = 0; index < guild.role_chart_ids.length; index++) {
           let channels = guild_cache.channels.cache.filter(channel => channel.type == 'text')
           channels.forEach(async channel => {
-            await channel.messages.fetch(guild.role_chart_ids[index])
+            await channel.messages.fetch(guild.role_chart_ids[index]).catch(err => {})
           })
         }
       }

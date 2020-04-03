@@ -17,8 +17,8 @@ module.exports = {
 
       if (role && member.roles.cache.has(role.id)) {
         await member.roles.remove(role)
-        chart.embed.embed.fields[index].name = `**${role.name} / ${role.members.array().length} members**`
-        message.edit(chart.embed)
+        chart.embed.embed.fields[index].name = `**${role.name} / ${role.members.size} members**`
+        await message.edit(chart.embed)
         await client.database.guilds.findOneAndUpdate({guild_id: reaction.message.guild.id}, {
           $set :{
             [`role_charts.${reaction.message.id}.embed`]: chart.embed
