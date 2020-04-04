@@ -8,7 +8,6 @@ module.exports = {
         permitted: []
     },
     exec: async (client, message, command) => {
-        message.delete()
         let email = command.message.content.split(' ')[1]
         let random = Math.floor(Math.random() * 90000) + 10000
         await client.globals.nodemailer.sendMail({
@@ -31,8 +30,8 @@ module.exports = {
                 }
               }
             })
-            message = await message.author.send(`\`\`An email has been sent to ${email}\`\`\n\`\`Please enter the 5 digit code that was sent\`\``)
-            await message.delete()
+            await message.delete({timeout: 1000})
+            await message.author.send(`\`\`An email has been sent to ${email}\`\`\n\`\`Please enter the 5 digit code that was sent\`\``)
           }
         })
     }
