@@ -124,6 +124,8 @@ module.exports = {
             }
           }
         }
+      } else {
+        message.delete({timeout: 2000})
       }
     }
 }
