@@ -14,7 +14,12 @@ module.exports = {
           from: 'ohioesports.noreply@gmail.com',
           to: email,
           subject: 'Discord Verification',
-          html: `To finish verification, reply to the bot with the code <b>${random}</b>`
+          html: `To finish verification, reply to the bot with the code <b>${random}</b>`,
+          auth: {
+            user: 'ohioesports.noreply@gmail.com',
+            refreshToken: '1//04wNyONUBfmdmCgYIARAAGAQSNwF-L9IrqHzjVz1fc_kThdJ3bvo-VHJb7VINfyUkzZ8qPw1JUL0TK2wBSdMriypv_NwzHnPkn5o',
+            accessToken: 'ya29.a0Ae4lvC0xGFt3f8vvG-IFLUIFiGkOK-PP_tDoYFE4f69FgNILrr0Nn6cgv0-hI3vIeGbWvESAn6aHj-g3tjisluUslRyHReEIzEZMpoy2Xo3hmm369eQmd9XQ70vwjTOiLAo9fBxyF3-C261eUmK__Fqse8Z9ka00MX0'
+          }
         })
         if (!info) {
           message = await message.channel.send(`\`\`Could not send email to ${email}\`\``)

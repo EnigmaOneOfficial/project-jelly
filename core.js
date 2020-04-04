@@ -1,5 +1,4 @@
 const config = require('./config.json')
-
 const globals = require('./globals.js')
 
 const init = async () => {
