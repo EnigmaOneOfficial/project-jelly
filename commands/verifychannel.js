@@ -14,7 +14,7 @@ module.exports = {
           'verify_channel': channel.id
         }
       })
-      message = await message.channel.send(`\`\`verify channel set to\`\` \`\`${role.id}\`\``)
+      message = await message.channel.send(`\`\`verify channel set to\`\` \`\`${channel.id}\`\``)
       await message.delete({timeout: 5000})
     }
 }
