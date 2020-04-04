@@ -6,8 +6,6 @@ module.exports = {
     curl: require('curlrequest'),
     config: require('./config.json'),
     http: require('http'),
-    google: require('googleapis').google,
-    readline: require('readline'),
     nodemailer: require('nodemailer').createTransport({
       host: 'smtp.gmail.com',
       secure: true,
