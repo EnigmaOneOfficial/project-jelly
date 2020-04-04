@@ -16,6 +16,6 @@ module.exports = {
       })
 
       message = await message.channel.send(`\`\`verify domain set to\`\` \`\`${domain}\`\``)
-      await message.delete({timeout: 5000})
+      await message.delete({timeout: 5000}).catch(err => console.log(err))
     }
 }

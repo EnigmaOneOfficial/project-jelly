@@ -49,7 +49,7 @@ module.exports = {
             role_chart_ids: message.id
           }
         })
-        message.edit(embed)
+        await message.edit(embed)
 
     }
 }

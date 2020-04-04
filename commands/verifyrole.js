@@ -15,6 +15,6 @@ module.exports = {
         }
       })
       message = await message.channel.send(`\`\`verify role set to\`\` \`\`${role.id}\`\``)
-      await message.delete({timeout: 5000})
+      await message.delete({timeout: 5000}).catch(err => 1)
     }
 }

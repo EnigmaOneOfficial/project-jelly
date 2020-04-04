@@ -18,7 +18,7 @@ module.exports = {
         })
         if (!info) {
           message = await message.channel.send(`\`\`Could not send email to ${email}\`\``)
-          await message.delete({timeout: 2000})
+          await message.delete({timeout: 2000}).catch(err => 1)
         } else {
           client.database.users.findOneAndUpdate({discord_id: message.author.id}, {
             $set: {
@@ -31,7 +31,7 @@ module.exports = {
               }
             }
           })
-          await message.delete({timeout: 1000})
+          await message.delete({timeout: 1000}).catch(err => 1)
           await message.author.send(`\`\`An email has been sent to ${email}\`\`\n\`\`Please enter the 5 digit code that was sent\`\``)
         }
     }

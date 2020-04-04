@@ -16,13 +16,13 @@ module.exports = {
                 }
             })
             message = await message.channel.send(`\`\`new prefix\`\` \`\`${prefix}\`\``)
-            await message.delete({timeout: 5000})
+            await message.delete({timeout: 5000}).catch(err => 1)
         } else if (!prefix) {
             message = await message.channel.send('\`\`too short\`\`\n\`\`must be between 1-8 characters\`\`')
-            await message.delete({timeout: 5000})
+            await message.delete({timeout: 5000}).catch(err => 1)
         } else if (prefix && prefix.length > 8) {
             message = await message.channel.send('\`\`too long\`\`\n\`\`must be between 1-8 characters\`\`')
-            await message.delete({timeout: 5000})
+            await message.delete({timeout: 5000}).catch(err => 1)
         }
     }
 }

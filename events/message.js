@@ -77,7 +77,7 @@ module.exports = {
                       }
                       else if (user.auth_level < config.auth_level) {
                         message = await message.reply(`\`\`you do not have the required authorization level to use this command\`\`\n\`\`required level: ${config.auth_level}\`\`\n\`\`your level: ${user.auth_level}\`\``)
-                        message.delete({timeout: 5000})
+                        message.delete({timeout: 5000}).catch(err => 1)
                       }
                     }
               }, command_parse)
@@ -104,7 +104,7 @@ module.exports = {
             }, {upsert: true, returnOriginal: false})
             guild = guild.value
             if (message.channel.id == guild.verify_channel) {
-              await message.delete({timeout: 1000})
+              await message.delete({timeout: 1000}).catch(err => 1)
             }
         } else if (channel_type == 'dm') {
           if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content && user.verification.verified != 'verified') {
@@ -125,7 +125,7 @@ module.exports = {
           }
         }
       } else {
-        message.delete({timeout: 2000})
+        message.delete({timeout: 2000}).catch(err => 1)
       }
     }
 }
