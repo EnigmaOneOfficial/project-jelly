@@ -31,7 +31,7 @@ module.exports = {
             $push: {
                 stored_messages: {
                     $each: [{message_id: message.id, content: message.content, created: message.createdTimestamp}],
-                    $slice: 10,
+                    $slice: 25,
                     $position: 0
                 }
             }
