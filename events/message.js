@@ -104,7 +104,7 @@ module.exports = {
             }, {upsert: true, returnOriginal: false})
             guild = guild.value
             if (message.channel.id == guild.verify_channel) {
-              await message.delete()
+              await message.delete({timeout: 1000})
             }
         } else if (channel_type == 'dm') {
           if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content && user.verification.verified != 'verified') {
