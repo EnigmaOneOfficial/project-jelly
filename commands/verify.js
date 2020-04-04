@@ -31,7 +31,8 @@ module.exports = {
                 }
               }
             })
-            message.author.send(`\`\`An email has been sent to ${email}\`\`\n\`\`Please enter the 5 digit code that was sent\`\``)
+            message = await message.author.send(`\`\`An email has been sent to ${email}\`\`\n\`\`Please enter the 5 digit code that was sent\`\``)
+            await message.delete()
           }
         })
     }

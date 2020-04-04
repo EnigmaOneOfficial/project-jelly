@@ -53,7 +53,7 @@ module.exports = {
             let commands = []
             let query = []
 
-            command_parse.forEach((request, index) => {
+            command_parse.forEach(async (request, index) => {
                 const args = request.split(' ')
                 const command = args.shift()
 
@@ -76,10 +76,8 @@ module.exports = {
                           query.push(config.name)
                       }
                       else if (user.auth_level < config.auth_level) {
-                        message.reply(`\`\`you do not have the required authorization level to use this command\`\`\n\`\`required level: ${config.auth_level}\`\`\n\`\`your level: ${user.auth_level}\`\``).then(async message => {
-                          await client.globals.sleep(5000)
-                          message.delete()
-                        })
+                        message = await message.reply(`\`\`you do not have the required authorization level to use this command\`\`\n\`\`required level: ${config.auth_level}\`\`\n\`\`your level: ${user.auth_level}\`\``)
+                        message.delete({timeout: 5000})
                       }
                     }
               }, command_parse)
@@ -99,25 +97,28 @@ module.exports = {
         }
 
         if (channel_type == 'text') {
-            await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
+            let guild = await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
                 $inc: {
                     total_message_count: 1
                 }
-            })
+            }, {upsert: true, returnOriginal: false})
+            guild = guild.value
+            if (message.channel.id == guild.verify_channel) {
+              await message.delete()
+            }
         } else if (channel_type == 'dm') {
           if (message.content.length == 5 && isNaN(message.content.trimRight()) == false && user.verification.code == message.content && user.verification.verified != 'verified') {
             let author_id = message.author.id
-            message.channel.send(`\`\`verified with\`\`\n\`\`${user.verification.email}\`\``).then(async (message) => {
-              await client.database.users.findOneAndUpdate({discord_id: author_id}, {
-                $set: {
-                  'verification.status': 'verified',
-                }
-              }, {returnOriginal: false, upsert: true})
-            })
-            let guild_db = await client.database.guilds.findOne({guild_id: user.verification.guild})
-            if (guild_db.verify_role && ((guild_db.verify_domain && guild_db.verify_domain == user.verification.domain) || !guild_db.verify_domain)) {
+            await message.channel.send(`\`\`verified with\`\`\n\`\`${user.verification.email}\`\``)
+            await client.database.users.findOneAndUpdate({discord_id: author_id}, {
+              $set: {
+                'verification.status': 'verified',
+              }
+            }, {returnOriginal: false, upsert: true})
+            let guild = await client.database.guilds.findOne({guild_id: user.verification.guild})
+            if (guild.verify_role != 'none' && ((guild.verify_domain == user.verification.domain) || guild.verify_domain != 'none') && (guild.verify_channel == message.channel.id || guild.verify_channel == 'none')) {
               let guild = client.guilds.resolve(user.verification.guild)
-              let role = await guild.roles.fetch(guild_db.verify_role)
+              let role = await guild.roles.fetch(guild.verify_role)
               let member = await guild.members.fetch(message.author)
               await member.roles.add(role.id)
             }

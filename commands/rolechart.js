@@ -32,25 +32,24 @@ module.exports = {
         index++
       })
 
-      message.channel.send(embed).then(async message => {
-        embed.embed.footer.text = 'id: ' + message.id
-        await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
-            $set: {
-              [`role_charts.${message.id}`]: {
-                index: 0,
-                length: index,
-                creator: command.called_by,
-                embed: embed,
-                reactions: [],
-                roles: role_ids
-              }
-            },
-            $push: {
-              role_chart_ids: message.id
+      message = await message.channel.send(embed)
+      embed.embed.footer.text = 'id: ' + message.id
+      await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
+          $set: {
+            [`role_charts.${message.id}`]: {
+              index: 0,
+              length: index,
+              creator: command.called_by,
+              embed: embed,
+              reactions: [],
+              roles: role_ids
             }
-          })
-          message.edit(embed)
+          },
+          $push: {
+            role_chart_ids: message.id
+          }
         })
+        message.edit(embed)
 
     }
 }

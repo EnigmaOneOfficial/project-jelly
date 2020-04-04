@@ -15,11 +15,14 @@ module.exports = {
                     prefix: prefix
                 }
             })
-            message.channel.send(`\`\`new prefix\`\` \`\`${prefix}\`\``)
+            message = await message.channel.send(`\`\`new prefix\`\` \`\`${prefix}\`\``)
+            await message.delete({timeout: 5000})
         } else if (!prefix) {
-            message.channel.send('\`\`too short\`\`\n\`\`must be between 1-8 characters\`\`')
+            message = await message.channel.send('\`\`too short\`\`\n\`\`must be between 1-8 characters\`\`')
+            await message.delete({timeout: 5000})
         } else if (prefix && prefix.length > 8) {
-            message.channel.send('\`\`too long\`\`\n\`\`must be between 1-8 characters\`\`')
+            message = await message.channel.send('\`\`too long\`\`\n\`\`must be between 1-8 characters\`\`')
+            await message.delete({timeout: 5000})
         }
     }
 }

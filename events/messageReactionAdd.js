@@ -32,10 +32,9 @@ module.exports = {
             [`role_charts.${reaction.message.id}.reactions`]: reaction.emoji.name
           }
         })
-        message.edit(chart.embed).then(async message => {
-            await message.react(reaction.emoji.name)
-            await reaction.users.remove(user.id)
-        })
+        message = await message.edit(chart.embed)
+        await message.react(reaction.emoji.name)
+        await reaction.users.remove(user.id)
       } else if (chart.index == chart.length && chart.reactions.includes(reaction.emoji.name)) {
         let index = chart.reactions.findIndex(emoji => emoji == reaction.emoji.name)
         let role = await message.guild.roles.fetch(chart.roles[index])

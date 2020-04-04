@@ -1,21 +1,20 @@
 module.exports = {
     config: {
-        name: 'verifydomain',
-        description: 'Link the verification role to a certain domain',
+        name: 'verifychannel',
+        description: 'Set a restricted channel in which people can verify in',
         aliases: [],
         availability: ['text'],
         auth_level: 3,
         permitted: []
     },
     exec: async (client, message, command) => {
-      let domain = message.cleanContent.split(' ')[1]
+      let channel = message.mentions.channels.first()
       await client.database.guilds.findOneAndUpdate({guild_id: message.guild.id}, {
         $set: {
-          'verify_domain': domain
+          'verify_channel': channel.id
         }
       })
-
-      message = await message.channel.send(`\`\`verify domain set to\`\` \`\`${domain}\`\``)
+      message = await message.channel.send(`\`\`verify channel set to\`\` \`\`${role.id}\`\``)
       await message.delete({timeout: 5000})
     }
 }

@@ -52,6 +52,7 @@ module.exports = {
             client.globals = require('../globals.js')
             await client.globals.load()
             message.channel.send('Reloaded \`\`globals\`\`')
+            console.log('Reloaded globals')
           })
 
         } else if (command_index != -1) {
@@ -64,6 +65,7 @@ module.exports = {
               client.commands.push(require(`./${path}`))
             }
             message.channel.send(`Reloaded command file \`\`${path.slice(0, path.length - 3)}\`\``)
+            console.log(`Reloaded command file ${path.slice(0, path.length - 3)}`)
           })
 
         } else if (event_index != -1) {
@@ -78,6 +80,7 @@ module.exports = {
               client.on(path.slice(0, path.length - 3), async (...args) => {args.unshift(client); args.push(event_module.config); await client.events[client.events.length - 1].exec.apply(null, args) })
             }
             message.channel.send(`Reloaded event file \`\`${path.slice(0, path.length - 3)}\`\``)
+            console.log(`Reloaded event file ${path.slice(0, path.length - 3)}`)
           })
         } else {
             message.channel.send(`Failed to locate file \`\`${command.args[0]}\`\``)

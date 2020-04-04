@@ -12,7 +12,10 @@ module.exports = {
                 guild_name: guild_cache.name,
                 role_charts: {},
                 role_chart_ids: [],
-                total_message_count: 0
+                total_message_count: 0,
+                verify_role: 'none',
+                verify_domain: 'none',
+                verify_channel: 'none'
             }
         },
         {
