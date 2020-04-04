@@ -124,8 +124,6 @@ module.exports = {
             }
           }
         }
-      } else if (message.author.bot && message.channel.type == 'text') {
-        message.delete({timeout: 2000}).catch(err => 1)
       }
     }
 }
